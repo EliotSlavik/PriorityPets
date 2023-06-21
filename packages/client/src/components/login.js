@@ -6,6 +6,7 @@ import { useSignIn } from "react-auth-kit";
 const Login = ({ showModal, handleCloseModal }) => {
   const [data, setData] = useState({ email: "", password: "" });
   const signin = useSignIn();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
@@ -32,6 +33,7 @@ const Login = ({ showModal, handleCloseModal }) => {
       console.log("User:", response.data);
 
       handleCloseModal();
+      signin(); // Trigger the sign-in state update
     } catch (error) {
       console.error("Login error:", error.message);
     }

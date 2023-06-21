@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "../util/axiosConfig";
 
-
-const Signup = ({ showModal, handleCloseModal }) => {
+const Signup = ({ showModal, handleCloseModal, onError }) => {
   const [data, setData] = useState({ username: "", password: "", email: "" });
 
   const handleInputChange = (e) => {
@@ -13,21 +12,16 @@ const Signup = ({ showModal, handleCloseModal }) => {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    /*axios
-      .post("/users", data) // Sending the form data to the "/users" endpoint
+
+    axios
+      .post("/auth/signup", data)
       .then((response) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error(error);
-      });*/
-
-    // Perform signup logic using data.username, data.email, and data.password.
-    // ...
-    console.log("Signup clicked!");
-    console.log("Username:", data.username);
-    console.log("Password:", data.password);
-    console.log("Email:", data.email);
+        //console.log(error);
+        onError(error);
+      });
   };
 
   return (
@@ -36,11 +30,9 @@ const Signup = ({ showModal, handleCloseModal }) => {
         <Modal.Title>Signup</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* Add your signup form or any other content here */}
-        {/* Example signup form */}
         <form onSubmit={handleSignup}>
           <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleInputChange} />
-          <input type="username" name="username" placeholder="Username" value={data.username} onChange={handleInputChange} />
+          <input type="text" name="username" placeholder="Username" value={data.username} onChange={handleInputChange} />
           <input type="password" name="password" placeholder="Password" value={data.password} onChange={handleInputChange} />
           <Button type="submit">Signup</Button>
         </form>

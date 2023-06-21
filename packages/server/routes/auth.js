@@ -15,8 +15,12 @@ router.use((req, res, next) => {
   next();
 });
 
-router.route("/").get((req, res, next) => {
+router.get("/", (req, res, next) => {
   res.send("auth endpoint");
+});
+
+router.get("/signup", (req, res, next) => {
+  res.send("signup endpoint");
 });
 
 router.post("/signup", async (req, res) => {
@@ -28,32 +32,29 @@ router.post("/signup", async (req, res) => {
 
   const symbolCheck = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
   const uppercaseCheck = /[A-Z]/;
+  const emailCheck = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i; // Updated email validation pattern
 
   if (!symbolCheck.test(password)) {
-    return res
-      .status(400)
-      .json({ error: "password must contain at least one symbol (e.g., ?!@#$%^&*)" });
+    return res.status(400).json({ error: "password must contain at least one symbol (e.g., ?!@#$%^&*)" });
   }
 
   if (!uppercaseCheck.test(password)) {
-    return res
-      .status(400)
-      .json({ error: "password must contain at least one uppercase letter" });
+    return res.status(400).json({ error: "password must contain at least one uppercase letter" });
   }
 
   if (password.length < 8 || password.length > 20) {
-    return res
-      .status(400)
-      .json({ error: "password length must be between 8 and 20 characters" });
+    return res.status(400).json({ error: "password length must be between 8 and 20 characters" });
+  }
+
+  if (!emailCheck.test(email)) {
+    return res.status(400).json({ error: "invalid email address" });
   }
 
   try {
     const savedUser = await User.findOne({ username: username });
 
     if (savedUser) {
-      return res
-        .status(422)
-        .json({ error: "user already exists with that name" });
+      return res.status(422).json({ error: "user already exists with that name" });
     }
 
     const hashedpassword = await bcrypt.hash(password, 12);

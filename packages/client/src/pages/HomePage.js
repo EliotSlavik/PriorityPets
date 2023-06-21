@@ -6,12 +6,12 @@ import Login from "../components/login";
 import Signup from "../components/signup";
 import { Button } from "react-bootstrap";
 import NavBar from "../components/Navbar";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function HomePage() {
   const [showLoginModal, setLoginShowModal] = useState(false);
   const [showSignupModal, setSignupShowModal] = useState(false);
-
-  console.log(window.location);
 
   const handleOpenLoginModal = () => setLoginShowModal(true);
   const handleCloseLoginModal = () => setLoginShowModal(false);
@@ -19,39 +19,21 @@ function HomePage() {
   const handleOpenSignupModal = () => setSignupShowModal(true);
   const handleCloseSignupModal = () => setSignupShowModal(false);
 
-  console.log("bad");
+  const handleSignupError = (error) => {
+    toast.error(`Error: ${error.response.status}: ${error.response.data.error}`);
+  };
 
   const logo = document.querySelectorAll("#logo path");
-  for (let i = 0; i < logo.length; i++) {
+  /*for (let i = 0; i < logo.length; i++) {
     console.log(`Letter ${i} is ${logo[i].getTotalLength()}`);
-  }
+  }*/
 
   return (
     <div className="home-page">
       <div className="parent">
-        <svg
-          id="logo"
-          width="662"
-          height="135"
-          viewBox="0 0 662 135"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <mask
-            id="path-1-outside-1_1_5"
-            maskUnits="userSpaceOnUse"
-            x="-0.191986"
-            y="0.40799"
-            width="662"
-            height="135"
-          >
-            <rect
-              fill="white"
-              x="-0.191986"
-              y="0.40799"
-              width="662"
-              height="135"
-            />
+        <svg id="logo" width="662" height="135" viewBox="0 0 662 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <mask id="path-1-outside-1_1_5" maskUnits="userSpaceOnUse" x="-0.191986" y="0.40799" width="662" height="135">
+            <rect fill="white" x="-0.191986" y="0.40799" width="662" height="135" />
             <path d="M4.80801 12.216C14.3653 8.97332 24.264 7.35199 34.504 7.35199C44.744 7.35199 53.2347 9.52799 59.976 13.88C66.7173 18.232 70.088 24.888 70.088 33.848C70.088 42.808 66.9307 50.36 60.616 56.504C54.3013 62.5627 46.7067 65.592 37.832 65.592C31.3467 65.592 28.104 63.1173 28.104 58.168C28.104 56.632 28.4027 55.0107 29 53.304C31.304 53.9013 33.3947 54.2 35.272 54.2C41.16 54.2 45.5973 52.5787 48.584 49.336C51.656 46.0933 53.192 41.6133 53.192 35.896C53.192 30.0933 51.5707 25.784 48.328 22.968C45.0854 20.152 40.5627 18.744 34.76 18.744C31.7733 18.744 28.1467 19.256 23.88 20.28C23.1973 30.776 22.856 40.0773 22.856 48.184C22.856 70.8827 23.752 87.3093 25.544 97.464C22.8133 98.488 19.912 99 16.84 99C13.768 99 11.08 98.0187 8.77601 96.056C6.55735 94.0933 5.44801 91.4907 5.44801 88.248C5.44801 85.0053 5.87468 79.3733 6.72801 71.352C7.58135 63.2453 8.00801 56.76 8.00801 51.896C8.00801 37.048 6.94135 23.8213 4.80801 12.216Z" />
             <path d="M98.097 97.464C95.4517 98.488 92.6357 99 89.649 99C86.6624 99 84.2303 98.3173 82.353 96.952C80.561 95.5013 79.665 93.5387 79.665 91.064C79.665 88.504 80.049 83.896 80.817 77.24C81.585 70.584 81.969 64.1413 81.969 57.912C81.969 51.5973 80.9877 44.216 79.025 35.768C81.7557 34.744 84.4437 34.232 87.089 34.232C89.7344 34.232 91.9957 35.128 93.873 36.92C95.8357 38.712 96.817 41.1013 96.817 44.088C96.817 45.624 96.561 47.928 96.049 51C95.537 53.9867 95.2383 56.248 95.153 57.784C98.481 50.1893 102.406 44.2587 106.929 39.992C111.537 35.64 116.102 33.464 120.625 33.464C123.782 33.464 126.3 34.5733 128.177 36.792C130.054 39.0107 130.993 41.8267 130.993 45.24C130.993 48.568 130.14 51.2987 128.433 53.432C126.726 55.48 124.593 56.504 122.033 56.504C119.558 56.504 117.553 56.248 116.017 55.736C116.273 54.712 116.401 53.7733 116.401 52.92C116.401 49.4213 115.164 47.672 112.689 47.672C108.934 47.672 105.393 51.4693 102.065 59.064C98.8224 66.5733 96.6464 73.6133 95.537 80.184C95.9637 86.584 96.817 92.344 98.097 97.464Z" />
             <path d="M138.293 35.384C141.024 34.616 143.754 34.232 146.485 34.232C149.301 34.232 151.69 35.0853 153.653 36.792C155.616 38.4987 156.597 40.7173 156.597 43.448C156.597 46.0933 156.128 50.744 155.189 57.4C154.336 63.9707 153.909 69.0907 153.909 72.76C153.909 82.3173 154.805 90.552 156.597 97.464C153.952 98.488 151.093 99 148.021 99C144.949 99 142.517 98.3173 140.725 96.952C138.933 95.5013 138.037 93.4533 138.037 90.808C138.037 88.0773 138.549 83.64 139.573 77.496C140.597 71.352 141.109 66.2747 141.109 62.264C141.109 51.5973 140.17 42.6373 138.293 35.384ZM139.957 6.45599C142.944 5.09065 145.888 4.40799 148.789 4.40799C151.69 4.40799 153.824 5.17599 155.189 6.71199C156.64 8.16265 157.365 10.3387 157.365 13.24C157.365 16.1413 156.384 18.7013 154.421 20.92C152.544 23.1387 150.069 24.248 146.997 24.248C140.682 24.248 137.525 20.9627 137.525 14.392C137.525 11.4907 138.336 8.84532 139.957 6.45599Z" />
@@ -128,33 +110,14 @@ function HomePage() {
           height="200px"
         />
       </div>
-      {/*<Link to="/TaskPage">*/}
-      {/*<button className="button-33" role="button">
-        Log In
-        </button>
-        {/*</Link>*/}
-      <Button
-        className="button-33"
-        variant="primary"
-        onClick={handleOpenLoginModal}
-      >
+      <Button className="button-33" variant="primary" onClick={handleOpenLoginModal}>
         Login
       </Button>
-      <Login
-        showModal={showLoginModal}
-        handleCloseModal={handleCloseLoginModal}
-      />
-      <Button
-        className="button-33"
-        variant="primary"
-        onClick={handleOpenSignupModal}
-      >
+      <Login showModal={showLoginModal} handleCloseModal={handleCloseLoginModal} />
+      <Button className="button-33" variant="primary" onClick={handleOpenSignupModal}>
         Signup
       </Button>
-      <Signup
-        showModal={showSignupModal}
-        handleCloseModal={handleCloseSignupModal}
-      />
+      <Signup showModal={showSignupModal} handleCloseModal={handleCloseSignupModal} onError={handleSignupError} />
     </div>
   );
 }
