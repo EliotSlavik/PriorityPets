@@ -1,18 +1,26 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "react-auth-kit";
+import { AuthProvider, useAuthUser } from "react-auth-kit"; // Updated import // *****ES
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <AuthProvider authType={"cookie"} authName={"_auth"} cookieDomain={window.location.hostname} cookieSecure={false}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </AuthProvider>
+const AuthenticatedApp = () => {
+const authUser = useAuthUser(); // Updated hook // *****ES
+
+return (
+<BrowserRouter>
+<App authUser={authUser} /> {/* Pass the authUser to the App component */}
+</BrowserRouter>
+);
+};
+
+ReactDOM.render(
+<AuthProvider authType={"cookie"} authName={"_auth"} cookieDomain={window.location.hostname} cookieSecure={false}>
+<AuthenticatedApp /> {/* Render the AuthenticatedApp */}
+</AuthProvider>,
+document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

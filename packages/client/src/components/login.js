@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "../util/axiosConfig";
-import { useSignIn } from "react-auth-kit";
+import { useAuthHeader, useSignIn } from "react-auth-kit"; // Updated import // *****ES
 
 const Login = ({ showModal, handleCloseModal }) => {
   const [data, setData] = useState({ email: "", password: "" });
-  const signin = useSignIn();
+  const authHeader = useAuthHeader(); // Updated hook // *****ES
+  const signin = useSignIn(); // Updated hook // *****ES
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -16,24 +17,25 @@ const Login = ({ showModal, handleCloseModal }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/auth/signin", data);
+      const response = await axios.post("/auth/signin", data, {
+        headers: {
+          Authorization: authHeader(), // Set the authorization header
+        },
+      });
+
+      const { token } = response.data;
 
       signin({
-        token:response.data.token,
-        expiresIn:360000,
-        tokenType:"Bearer",
-        authState:{email: data.email}
-      })
-
-      const token = response.headers.authorization;
-
-      localStorage.setItem("token", token);
+        token: token,
+        expiresIn: 360000,
+        tokenType: "Bearer",
+        authState: { email: data.email },
+      });
 
       console.log("Login successful!");
       console.log("User:", response.data);
 
       handleCloseModal();
-      signin(); // Trigger the sign-in state update
     } catch (error) {
       console.error("Login error:", error.message);
     }

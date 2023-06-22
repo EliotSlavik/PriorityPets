@@ -2,6 +2,7 @@ Install this stuff
 <!-- Install for Back End -->
 
 # Express
+
 npm install express mongodb mongoose
 
 # Node Mailer
@@ -11,6 +12,14 @@ npm install nodemailer
 # SendGrid
 
 npm install @sendgrid/mail
+
+# Jsonwebtoken
+
+npm install jsonwebtoken
+
+# Passport Local
+
+npm install passport-local
 
 <!-- Install for Front End -->
 
@@ -26,8 +35,12 @@ npm install react-datetime-picker
 
 npm install bootstrap
 
-# React Auth Kit
-npm install react-auth-kit
+
+# Toast
+
+ npm install --save react-toastify
+
+
 ---
 
 # Getting Started with Create React App

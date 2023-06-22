@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!password || !username || !email) {
-    return res.status(422).json({ error: "please add all the fields" });
+    return res.status(422).json({ error: "Please fill in all the fields" });
   }
 
   const symbolCheck = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
@@ -35,34 +35,34 @@ router.post("/signup", async (req, res) => {
   const emailCheck = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i; // Updated email validation pattern
 
   if (!symbolCheck.test(password)) {
-    return res.status(400).json({ error: "password must contain at least one symbol (e.g., ?!@#$%^&*)" });
+    return res.status(400).json({ error: "Password must contain at least one symbol (e.g., ?!@#$%^&*)" });
   }
 
   if (!uppercaseCheck.test(password)) {
-    return res.status(400).json({ error: "password must contain at least one uppercase letter" });
+    return res.status(400).json({ error: "Password must contain at least one uppercase letter" });
   }
 
   if (password.length < 8 || password.length > 20) {
-    return res.status(400).json({ error: "password length must be between 8 and 20 characters" });
+    return res.status(400).json({ error: "Password length must be between 8 and 20 characters" });
   }
 
   if (!emailCheck.test(email)) {
-    return res.status(400).json({ error: "invalid email address" });
+    return res.status(400).json({ error: "Invalid email address" });
   }
 
   try {
-    const savedUser = await User.findOne({ username: username });
+    const existingUser = await User.findOne({ username });
 
-    if (savedUser) {
-      return res.status(422).json({ error: "user already exists with that name" });
+    if (existingUser) {
+      return res.status(422).json({ error: "User already exists with that name" });
     }
 
-    const hashedpassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
       username,
       email,
-      password: hashedpassword,
+      password: hashedPassword,
     });
 
     const newUser = await user.save();
@@ -74,13 +74,10 @@ router.post("/signup", async (req, res) => {
 
     const token = jwt.sign(userForToken, process.env.JWT_SECRET);
 
-    // Return the JWT token in the response headers
-    res.setHeader("Authorization", token);
-
-    res.status(201).json({ message: "saved successfully", user: newUser });
+    res.status(201).json({ message: "Saved successfully", user: newUser, token });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Internal server error occurred while signing up" });
+    res.status(500).json({ error: "An internal server error occurred while signing up" });
   }
 });
 
@@ -88,24 +85,20 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(422).json({ error: "missing email or password" });
+    return res.status(422).json({ error: "Missing email or password" });
   }
 
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({
-        error: "Invalid email",
-      });
+      return res.status(401).json({ error: "Invalid email" });
     }
 
     const passwordCorrect = await bcrypt.compare(password, user.password);
 
     if (!passwordCorrect) {
-      return res.status(401).json({
-        error: "Invalid password",
-      });
+      return res.status(401).json({ error: "Invalid password" });
     }
 
     const userForToken = {
@@ -115,14 +108,20 @@ router.post("/signin", async (req, res) => {
 
     const token = jwt.sign(userForToken, process.env.JWT_SECRET);
 
-    // Return the JWT token in the response headers
-    res.setHeader("Authorization", token);
-
     res.status(200).json({ token, username: user.username, uid: user.id });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Internal server error occurred while signing in" });
+    res.status(500).json({ error: "An internal server error occurred while signing in" });
   }
 });
 
 export default router;
+
+
+// *****ES
+// Modified the error messages to provide clearer feedback to the client.
+// Used the destructuring assignment to extract username, email, and password directly from req.body.
+// Changed the variable name hashedpassword to hashedPassword for consistency.
+// Updated the variable name savedUser to existingUser for clarity.
+// Replaced res.setHeader("Authorization", "Bearer " + token); with res.status(201).json({ message: "Saved successfully", user: newUser, token }); to return the token in the response body instead of the headers. This aligns with best practices and allows the client to access the token more conveniently.
+// Updated the error responses in the signin route to be consistent with the error messages in the signup route.

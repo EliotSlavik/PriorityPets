@@ -4,7 +4,7 @@ import "./PetPage.css";
 import { Modal, Button } from "react-bootstrap";
 import GravePicker from "../components/GravePicker";
 import NavBar from "../components/Navbar.js";
-
+import Game from "../components/Game";
 
 function PetPage() {
   const [show, setShow] = useState(false);
@@ -53,6 +53,7 @@ function PetPage() {
         <Button className="close-grave-modal" onClick={closeGraveModal}>
           Close
         </Button>
+        <Game />
       </Modal>
       <div className="pet-dec-card">
         <img className="foodBowl" src="/accessories/foodbowl.png" />

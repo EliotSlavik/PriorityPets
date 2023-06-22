@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "../util/axiosConfig";
+import { useAuthHeader, useSignIn } from "react-auth-kit";
 
-const Signup = ({ showModal, handleCloseModal, onError }) => {
+const Signup = ({ showModal, handleCloseModal }) => {
   const [data, setData] = useState({ username: "", password: "", email: "" });
 
   const handleInputChange = (e) => {
@@ -10,18 +11,35 @@ const Signup = ({ showModal, handleCloseModal, onError }) => {
     setData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSignup = (e) => {
+  const authHeader = useAuthHeader();
+  const signin = useSignIn();
+
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    axios
-      .post("/auth/signup", data)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        //console.log(error);
-        onError(error);
+    try {
+      const response = await axios.post("/auth/signup", data, {
+        headers: {
+          Authorization: authHeader(),
+        },
       });
+
+      const { token } = response.data;
+
+      signin({
+        token: token,
+        expiresIn: 360000,
+        tokenType: "Bearer",
+        authState: { email: data.email },
+      });
+
+      console.log("Signup successful!");
+      console.log("User:", response.data);
+
+      handleCloseModal();
+    } catch (error) {
+      console.error("Signup error:", error.message);
+    }
   };
 
   return (
