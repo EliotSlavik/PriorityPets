@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    xp: {
+    points: {
       type: Number,
       default: 0,
     },
@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema(
         ref: "Task",
       },
     ],
+
     pets: {
       currentPet: {
         type: ObjectId,

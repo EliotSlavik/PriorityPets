@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./PetPicker.css";
 import axios from "packages/client/src/util/axiosConfig.js"
 import { Container, Form } from "react-bootstrap";
+import { authContext } from "../contexts/authContext";
 
 const imgs = [
   "/x2/Cat_Down@2x.png",
@@ -20,18 +21,20 @@ const initialData = {
 
 const PetPicker = ({ selected, setSelected, pet }) => {
   const [formData, setFormData] = useState(initialData);
+  const{auth, setAuth} = useContext(authContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await axios.post(`/pets/${selected}`, { user: email, ...formData });
+      const response = await axios.post(`/pets/${selected}`, { auth: email, ...formData });
       setFormData(initialData);
       console.log("Updated pet:", response.data);
     } catch (error) {
       console.log("Error occurred while submitting the form:", error);
     }
   };
+
 
   const handlePetSelection = (pet) => {
     setSelected(pet);
