@@ -26,7 +26,8 @@ npm install react-datetime-picker
 
 npm install bootstrap
 
-
+# React Auth Kit
+npm install react-auth-kit
 ---
 
 # Getting Started with Create React App

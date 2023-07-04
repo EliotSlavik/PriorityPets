@@ -1,125 +1,81 @@
+import keys from "../config/keys";
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { User } from "../models";
+import User from "../models/user";
 
 const router = express.Router();
 
-router.use(express.json());
-
-// Enable CORS to allow cross-origin requests
-router.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
+router.get("/signup", async (req, res, next) => {
+  res.json({
+    message: "signup",
+  });
 });
 
-router.get("/", (req, res, next) => {
-  res.send("auth endpoint");
-});
-
-router.get("/signup", (req, res, next) => {
-  res.send("signup endpoint");
-});
-
-router.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
-
-  if (!password || !username || !email) {
-    return res.status(422).json({ error: "please add all the fields" });
-  }
-
-  const symbolCheck = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-  const uppercaseCheck = /[A-Z]/;
-  const emailCheck = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i; // Updated email validation pattern
-
-  if (!symbolCheck.test(password)) {
-    return res.status(400).json({ error: "password must contain at least one symbol (e.g., ?!@#$%^&*)" });
-  }
-
-  if (!uppercaseCheck.test(password)) {
-    return res.status(400).json({ error: "password must contain at least one uppercase letter" });
-  }
-
-  if (password.length < 8 || password.length > 20) {
-    return res.status(400).json({ error: "password length must be between 8 and 20 characters" });
-  }
-
-  if (!emailCheck.test(email)) {
-    return res.status(400).json({ error: "invalid email address" });
-  }
-
+router.post("/signup", async (req, res, next) => {
   try {
-    const savedUser = await User.findOne({ username: username });
+    const { email, password, username } = req.body;
 
-    if (savedUser) {
-      return res.status(422).json({ error: "user already exists with that name" });
-    }
+    let user = await User.findOne({ email: email });
 
-    const hashedpassword = await bcrypt.hash(password, 12);
+    if (user)
+      return res.status(422).json({
+        message: "Validation error",
+        errors: {
+          email: "Email address already in use.",
+        },
+      });
 
-    const user = new User({
-      username,
-      email,
-      password: hashedpassword,
-    });
+    const passwordHash = await bcrypt.hash(password, keys.auth.hashRounds);
+    user = await User.create({ email, passwordHash, username });
 
-    const newUser = await user.save();
+    user = user.toJSON();
+    delete user.passwordHash;
 
-    const userForToken = {
-      username: newUser.username,
-      id: newUser._id,
-    };
-
-    const token = jwt.sign(userForToken, process.env.JWT_SECRET);
-
-    // Return the JWT token in the response headers
-    res.setHeader("Authorization", token);
-
-    res.status(201).json({ message: "saved successfully", user: newUser });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error occurred while signing up" });
+    res.json(user);
+  } catch (error) {
+    next(error);
   }
 });
 
-router.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(422).json({ error: "missing email or password" });
-  }
-
+router.post("/signin", async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: email });
+    const { email, password } = req.body;
+
+    let user = await User.findOne({ email: email });
 
     if (!user) {
       return res.status(401).json({
-        error: "Invalid email",
+        message: "Authentication error",
+        errors: {
+          email: "Invalid credentials.",
+        },
       });
     }
 
-    const passwordCorrect = await bcrypt.compare(password, user.password);
-
-    if (!passwordCorrect) {
+    const passwordIsValid = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordIsValid) {
       return res.status(401).json({
-        error: "Invalid password",
+        message: "Authentication error",
+        errors: {
+          email: "Invalid credentials.",
+        },
       });
     }
 
-    const userForToken = {
-      username: user.username,
-      id: user._id,
-    };
+    const accessToken = jwt.sign({ sub: email }, keys.auth.accessTokenSecret, {
+      expiresIn: keys.auth.accessTokenExp,
+    });
 
-    const token = jwt.sign(userForToken, process.env.JWT_SECRET);
+    await user.save();
 
-    res.status(200).json({ token: token, username: user.username, uid: user.id });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error occurred while signing in" });
+    user = user.toJSON();
+    delete user.passwordHash;
+
+    res.json({ token: accessToken, user });
+  } catch (error) {
+    next(error);
   }
 });
 
-export default router;
+module.exports = router;

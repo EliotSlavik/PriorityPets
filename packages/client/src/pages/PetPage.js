@@ -3,13 +3,18 @@ import PetPicker from "../components/PetPicker";
 import "./PetPage.css";
 import { Modal, Button } from "react-bootstrap";
 import GravePicker from "../components/GravePicker";
-import PetGame from "../components/PetGame";
 import NavBar from "../components/Navbar.js";
+import { motion } from "framer-motion";
+//import PetGame from "../components/PetGame";
 
+const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
 function PetPage() {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(0);
+  const [selectedPet, setSelectedPet] = useState(imgs[0]);
+  const [isActivated, setIsActivated] = useState(false);
 
   const openModal = (e) => {
     e.preventDefault();
@@ -29,53 +34,96 @@ function PetPage() {
     setOpen(false);
   };
 
+  const handlePetSelection = (event) => {
+    setShow(false);
+  };
+
+  const handleButtonClick = () => {
+    setIsActivated(!isActivated);
+  };
+
   return (
     <>
-      <h1 className="pet-title">Welcome To Your Pet's Page</h1>
-      <Button className="button-card" onClick={openModal}>
-        Choose Your Pet
-      </Button>
-
-      <Modal show={show} className="pet-modal">
-        <PetPicker />
-        <Button className="modal-cancel-button" onClick={closeModal}>
-          Cancel
+      <div className="main-background-div">
+        <NavBar />
+        <h1 className="pet-title">Welcome To Your Pet's Page</h1>
+        <Button className="button-card" onClick={openModal}>
+          Choose Your Pet
         </Button>
-      </Modal>
+        {/*<PetGame />*/}
 
-      <Button className="graveyard-button" onClick={openGraveModal}>
-        Visit A Pet's Grave
-      </Button>
-      <Modal show={open} className="grave-modal">
-        <GravePicker />
-        <Button className="close-grave-modal" onClick={closeGraveModal}>
-          Close
+        <Button className="jump-button" onClick={handleButtonClick}>
+          Wanna See Me Jump?
         </Button>
-      </Modal>
-      <div className="pet-dec-card">
-        <img
-          className="foodBowl"
-          alt="food bowl"
-          src="/accessories/foodbowl.png"
-        />
 
-        <img
-          className="waterBowl"
-          alt="water bowl"
-          src="/accessories/waterbowl.png"
-        />
-        <img className="petty" alt="pet" src="/x2/Cat_Left@2x.png" />
-        {/* <PetGame /> */}
-        <img
-          className="petHouse"
-          alt="pet house"
-          src="/accessories/pethouse.png"
-        />
-      </div>
-      <div className="graveyard-holder">
-        <img className="petTree" alt="tree" src="/accessories/tree.png" />
-        <img className="grave" alt="grave" src="/accessories/gravemarker.png" />
-        <img className="grave" alt="grave" src="/accessories/gravemarker.png" />
+        {/* <input
+          type="range"
+          min="-125"
+          max="40"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        /> */}
+
+        <Modal show={show} className="pet-modal">
+          <Modal.Header
+            closeButton
+            onClick={closeModal}
+            style={{
+              backgroundColor: "lightblue",
+              marginBottom: "-1px",
+              color: "darkblue",
+              fontSize: "x-large",
+              fontWeight: "bolder",
+            }}
+          >
+            Welcome To The Pet Store
+          </Modal.Header>
+          <PetPicker selected={selectedPet} setSelected={setSelectedPet} imgs={imgs} handlePetSelection={handlePetSelection} />
+          <Button onClick={handlePetSelection} className="handle-pet-btn">
+            Choose
+          </Button>
+        </Modal>
+
+        <Button className="graveyard-button" onClick={openGraveModal}>
+          Visit Pet Cemetary
+        </Button>
+        <Modal show={open} className="grave-modal">
+          <Modal.Header
+            closeButton
+            onClick={closeGraveModal}
+            style={{
+              backgroundColor: "lightblue",
+              marginBottom: "-1px",
+              color: "darkblue",
+              fontSize: "x-large",
+              fontWeight: "bolder",
+            }}
+          >
+            Revive Your Pet
+          </Modal.Header>
+          <GravePicker />
+        </Modal>
+        <div className="pet-dec-card">
+          <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
+
+          <img
+            className="waterBowl"
+            alt="water bowl"
+            src="/accessories/waterbowl.png"
+          />
+          <motion.img
+            animate={{ x: value * 8 + "px" }}
+            className={isActivated ? "petty-move" : "petty"}
+            alt="pet"
+            src={selectedPet}
+          />
+          <img
+            className="petHouse"
+            alt="pet house"
+            src="/accessories/pethouse.png"
+          />
+        </div>
+        <div className="graveyard-holder"></div>
       </div>
     </>
   );

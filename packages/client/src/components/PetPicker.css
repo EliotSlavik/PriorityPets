@@ -1,14 +1,14 @@
 .pet-card {
-  background-color: green;
-  max-width: 500px;
+  max-width: 700px;
+  min-width: 500px;
   max-height: 180vh;
   min-height: 300px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-content: flex-start;
-  align-items: flex-start;
-  justify-content: center;
+ 
+ 
+
   padding: 10px;
 }
 
@@ -16,10 +16,10 @@
   width: 150px;
 }
 
-#image:hover {
+.selected {
   width: 150px;
-  border-radius: 40px;
-  animation: jiggle 0.2s infinite;
+  border-radius: 20px;
+background-color: rgb(160, 212, 255);
 }
 
 .pet-picker-header {
@@ -28,9 +28,10 @@
   text-align: center;
   color: white;
   font-size: xx-large;
-  border-radius: 22px;
+
 }
 
 .pet-container {
-  background-color: green;
+  background: url("../images/petstores.jpeg") center center/cover no-repeat;
+
 }

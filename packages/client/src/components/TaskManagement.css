@@ -26,6 +26,7 @@ li.task {
 
 div.holder {
   width: 600px;
+
 }
 
 ol:hover {
@@ -59,12 +60,37 @@ ol {
 }
 
 .modalButton {
-  transform: scale(1.4);
-  margin-left: 20px;
-  margin-bottom: 30px;
-  color: black;
-  background-color: lightgray;
-  font-weight: bold;
+  background-image: linear-gradient(#0a4979, #0462b9);
+  border: 1px solid #31404b;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  direction: ltr;
+  display: block;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+  font-size: 27px;
+  font-weight: 450;
+  letter-spacing: -0.022em;
+  line-height: 1.47059;
+  min-width: 120px;
+  min-height: 45px;
+  margin-bottom: 10px;
+  overflow: visible;
+  padding: 4px 15px;
+  text-align: center;
+ 
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.modalButton:hover {
+  background-image: linear-gradient(#2551d3, #034c87);
+  border-color: #1482d0;
+  text-decoration: none;
 }
 
 .listDiv {
@@ -72,21 +98,31 @@ ol {
   justify-content: center;
 }
 
-.editButton {
-  background-color: dimgrey;
-  margin-left: 30px;
+.edit-button {
+background-color: gray;
+border: none;
+width: 90px;
+height: 45px;
+margin-left: 30px;
+font-size: larger;
+border-radius: 8px;
+padding: 5px;
+}
+.edit-button:hover {
+  background-color: rgb(158, 153, 153);
+  transition: ease-in-out;
 }
 
 .datePicker {
   max-width: 300px;
-  margin-left: 175px;
+  margin-left: 145px;
 }
 
 .dueDateSpan {
   color: white;
   position: relative;
   top: 35px;
-  left: 50px;
+  left: 20px;
   font-weight: bold;
   font-size: large;
 }
@@ -106,3 +142,5 @@ ol {
   align-items: flex-start;
   padding: 10px;
 }
+
+

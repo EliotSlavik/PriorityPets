@@ -6,13 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Modal } from "react-bootstrap";
 import "./TaskManagement.css";
 import axios from "../util/axiosConfig";
-import { useAuthUser } from "react-auth-kit";
 
 const bgColor = ["khaki", "orange", "orangered"];
 function TaskManagement() {
-  const auth = useAuthUser();
-  console.log(`Hello ${auth().user}`);
-
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -133,30 +129,20 @@ function TaskManagement() {
     });
   }, [tasks]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("/tasks")
-  //     .then((response) => {
-  //       setTasks(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
   return (
     <>
-      <div className="div-card2">
+      <div className="div-card2" >
         <Button className="modalButton" onClick={openModal}>
           Add Task
         </Button>
-        <Modal className="modal" show={show} onHide={closeModal}>
+        <Modal className="modal" show={show} onHide={closeModal}  >
+          <Modal.Header closeButton style={{marginBottom: "-60px", backgroundColor: "green", fontSize: "30px"}}></Modal.Header>
           <div
             className="container mt-5"
             style={{
-              backgroundColor: "darkgreen",
+              backgroundColor: "green",
               borderRadius: "20px",
-              marginBottom: "30px",
+              marginBottom: "-580px"
             }}
           >
             <h1 className="mb-4" style={{ color: "white" }}>
@@ -174,11 +160,11 @@ function TaskManagement() {
               <span className="dueDateSpan">Set Due Date</span>
               <DateTimePicker className="form-control mb-2 datePicker" value={dueDate} onChange={(date) => setDueDate(date)} placeholder="Due Date" />
               <span className="dueDateSpan">Set Reminder</span>
-              <DateTimePicker className="form-control mb-2 datePicker" value={reminder} onChange={(date) => setReminder(date)} placeholder="Reminder" />
-              <Button className="float-right mt-3" onClick={handleAddTask}>
+              <DateTimePicker className="form-control mb-2 datePicker"  value={reminder} onChange={(date) => setReminder(date)} placeholder="Reminder" />
+              <Button className="float-right mt-3" style={{ borderRadius: "10px"}} onClick={handleAddTask}>
                 Add Task
               </Button>
-              <Button className="float-right mt-3" style={{ marginLeft: "20px" }} onClick={closeModal}>
+              <Button className="float-right mt-3" style={{ marginLeft: "20px", borderRadius: "10px"}} onClick={closeModal}>
                 Close
               </Button>
             </div>
@@ -225,21 +211,22 @@ function TaskManagement() {
                     <span className="para">Due: {task.dueDate ? moment(task.dueDate).format("ddd MMM DD 'YY h:mm") : "-"}</span>
                     <br></br>
                     <span className="para">REM: {task.reminder ? moment(task.reminder).format("ddd MMM DD 'YY h:mm") : "-"}</span>
-                    <Button className="editButton" onClick={() => openEditModal(index)}>
+                    <button className="edit-button"  onClick={() => openEditModal(index)}>
                       Edit
-                    </Button>
+                    </button>
 
                     <Modal //edit task modal
                       className="modal"
                       show={showEditModal}
                       onHide={() => setShowEditModal(false)}
                     >
+                      <Modal.Header closeButton style={{backgroundColor: "green", fontSize: "30px", marginBottom: "-70px"}}></Modal.Header>
                       <div
                         className="container mt-5"
                         style={{
-                          backgroundColor: "darkgreen",
+                          backgroundColor: "green",
                           borderRadius: "20px",
-                          marginBottom: "30px",
+                          marginBottom: "-650px",
                         }}
                       >
                         <h1 className="mb-4" style={{ color: "white" }}>
@@ -268,7 +255,7 @@ function TaskManagement() {
                       </div>
                     </Modal>
 
-                    <Button className="btn btn-danger deleteButtonTask" style={{ marginLeft: "30px", border: "2px black solid" }} onClick={() => handleDeleteTask(index)}>
+                    <Button className="btn btn-danger deleteButtonTask" style={{ marginLeft: "30px", borderRadius: "10px", fontSize: "larger", marginBottom: "5px"}} onClick={() => handleDeleteTask(index)}>
                       Delete Task
                     </Button>
                   </div>

@@ -21,12 +21,12 @@ router.get("/:id", async (request, response) => {
 
 router.post("/:id", async (request, response) => {
   const id = request.params.id;
-  const { name, appearance, hungerLevel, healthLevel } = request.body;
+  const { user, name, appearance, healthLevel } = request.body;
 
   try {
     const updatedPet = await Pet.findByIdAndUpdate(
       id,
-      { name, appearance, hungerLevel, healthLevel },
+      { user, name, appearance, healthLevel },
       {
         new: true,
       }
@@ -39,6 +39,24 @@ router.post("/:id", async (request, response) => {
     }
   } catch (error) {
     response.status(500).json({ error: "An error occurred when updating the pet." });
+  }
+});
+
+router.post("/heal/:id", async (request, response) => {
+  const id = request.params.id;
+
+  try {
+    const pet = await Pet.findById(id).exec();
+
+    if (pet) {
+      pet.healthLevel = pet.healthLevel + 10; 
+      await pet.save();
+      response.json(pet);
+    } else {
+      response.status(404).json({ error: "Pet not found." });
+    }
+  } catch (error) {
+    response.status(500).json({ error: "An error occurred when healing the pet." });
   }
 });
 

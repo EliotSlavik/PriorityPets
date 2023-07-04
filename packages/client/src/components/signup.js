@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "../util/axiosConfig";
+import useAuth from "../hooks/useAuth";
 
 const Signup = ({ showModal, handleCloseModal, onError }) => {
-  const [data, setData] = useState({ username: "", password: "", email: "" });
+  const [data, setData] = useState({ username: "", password: "", email: "", confirmPassword: "" });
+  const { signUp } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -13,15 +15,7 @@ const Signup = ({ showModal, handleCloseModal, onError }) => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    axios
-      .post("/auth/signup", data)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        //console.log(error);
-        onError(error);
-      });
+    signUp(data.email, data.password, data.confirmPassword, onError);
   };
 
   return (
@@ -34,6 +28,7 @@ const Signup = ({ showModal, handleCloseModal, onError }) => {
           <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleInputChange} />
           <input type="text" name="username" placeholder="Username" value={data.username} onChange={handleInputChange} />
           <input type="password" name="password" placeholder="Password" value={data.password} onChange={handleInputChange} />
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" value={data.confirmPassword} onChange={handleInputChange} />
           <Button type="submit">Signup</Button>
         </form>
       </Modal.Body>

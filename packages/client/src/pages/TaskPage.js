@@ -1,20 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import TaskManagement from "../components/TaskManagement";
 import NavBar from "../components/Navbar.js";
+import './TaskPage.css'
+import { authContext } from "../contexts/authContext";
 
 function TaskPage() {
+  const { auth, setAuth } = useContext(authContext);
+
   return (
-    <div style={{ backgroundColor: "green", width: "100vw", height: "100vh" }}>
+    <div className="mainTaskDiv" >
       <NavBar />
-      <h1 style={{ color: "white", fontWeight: "bold", fontSize: "60px" }}> 
-        User's Priorities 
-      </h1>
+      <h1 style={{ color: "white", fontWeight: "bold", fontSize: "60px" }}>User's Priorities</h1>
       <TaskManagement />
     </div>
   );
 }
 
 export default TaskPage;
-
-
-

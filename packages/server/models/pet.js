@@ -9,10 +9,6 @@ const petSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  hungerLevel: {
-    type: Number,
-    default: 0,
-  },
   healthLevel: {
     type: Number,
     default: 0,
@@ -26,10 +22,10 @@ const petSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  lifespan: {
-    type: Number,
-    default: 0,
-  },
+  // lifespan: {
+  //   type: Number,
+  //   default: 0,
+  // },
 });
 
 const Pet = mongoose.model("Pet", petSchema);
