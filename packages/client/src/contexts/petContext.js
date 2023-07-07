@@ -21,7 +21,11 @@ const PetProvider = ({ children }) => {
     return () => {};
   }, [pet]);
 
-  return <petContext.Provider value={{ pet, setPet }}>{children}</petContext.Provider>;
+  return (
+    <petContext.Provider value={{ pet, setPet }}>
+      {children}
+    </petContext.Provider>
+  );
 };
 
 export default PetProvider;
