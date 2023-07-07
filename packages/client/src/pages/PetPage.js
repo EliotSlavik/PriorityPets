@@ -5,7 +5,9 @@ import { Modal, Button } from "react-bootstrap";
 import GravePicker from "../components/GravePicker";
 import NavBar from "../components/Navbar.js";
 import { motion } from "framer-motion";
-//import PetGame from "../components/PetGame";
+import axios from "../util/axiosConfig";
+import { petContext } from "../contexts/petContext";
+import useAuth from "../hooks/useAuth";
 
 const imgs = [
   "/x2/Cat_Down@2x.png",
@@ -16,24 +18,25 @@ const imgs = [
   "/x2/Rabbit_Down@2x.png",
 ];
 
-
-const initialData = {
-  name: "",
-  appearance: "",
-  healthLevel: 100,
-};
-
-
 function PetPage() {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0);
-  const [selectedPet, setSelectedPet] = useState(imgs[0]);
   const [isActivated, setIsActivated] = useState(false);
-  const [showPet, setShowPet] = useState(false)
-  const [showButton, setShowButton] = useState(false)
- 
-console.log(initialData.healthLevel)
+  const [showPetDiv, setShowPetDiv] = useState(false)
+  const [showJumpButton, setShowJumpButton] = useState(false)
+  const { auth } = useAuth();
+  const [selectedPet, setSelectedPet] = useState(imgs[0]);
+  const [petName, setPetName] = useState("");
+  const [petApperance, setPetApperance] = useState("");
+  const { pet, setPet } = useContext(petContext);
+  const [formData, setFormData] = useState({
+    name: "",
+    appearance: "",
+    healthLevel: 100,
+    userId: auth.user._id,
+  });
+
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -52,13 +55,32 @@ console.log(initialData.healthLevel)
     setOpen(false);
   };
 
-  const handlePetSelection = (event) => {
+  const handlePetSelection = async (event) => {
+    setFormData({
+      name: petName,
+      appearance: petApperance,
+      userId: auth.user._id,
+    });
     setShow(false);
-    setShowPet(true)
-    setShowButton(true)
+    setShowPetDiv(true)
+    setShowJumpButton(true)
+    console.log(formData);
+    console.log(auth.user._id);
+    try {
+      const response = await axios.post("pets/", {
+        name: "kinggeorge",
+        appearance: "/x2/Pig_Down@2x.png",
+        userId: auth.user._id,
+      }); //formData);
+      console.log("Updated pet:", response.data);
+      //  setPet(response.data.pet);
+    } catch (error) {
+      console.log("Error occurred while updating the pet:", error);
+    }
   };
 
   const handleButtonClick = () => {
+    handlePetSelection();
     setIsActivated(!isActivated);
   };
 
@@ -69,12 +91,11 @@ console.log(initialData.healthLevel)
         <NavBar />
         <h1 className="pet-title">Welcome To Your Pet's Page</h1>
         {/* This button renders differently on the page when the health is greater than 0. */}
-        <Button className={initialData.healthLevel <= 0 ? "button-card" : "button-card-indiv"} onClick={openModal}>
+        <Button className={formData.healthLevel <= 0 ? "button-card" : "button-card-indiv"} onClick={openModal}>
           Choose Your Pet
         </Button>
-        {/*<PetGame />*/}
-        {/* This button renders when the user chooses the pet */}
-        <Button className={showButton ? "jump-button" : "jump-button-hide"} onClick={handleButtonClick}>
+
+        <Button className={showJumpButton ? "jump-button" : "jump-button-hide"} onClick={handleButtonClick}>
           Wanna See Me Jump?
         </Button>
 
@@ -102,17 +123,22 @@ console.log(initialData.healthLevel)
           </Modal.Header>
           <PetPicker
             selected={selectedPet}
-            setSelected={setSelectedPet}
+            petApperance={petApperance}
+            petName={petName}
+            setPetApperance={setPetApperance}
+            setSelectedPet={setSelectedPet}
+            setPetName={setPetName}
+            formData={formData}
+            setFormData={setFormData}
             imgs={imgs}
             handlePetSelection={handlePetSelection}
-          
           />
           <Button onClick={handlePetSelection} className="handle-pet-btn">
             Choose
           </Button>
         </Modal>
             {/* The cemetary button only renders when the health is 0 */}
-        <Button className={initialData.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"} onClick={openGraveModal}>
+        <Button className={formData.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"} onClick={openGraveModal}>
           Visit Pet Cemetary
         </Button>
         <Modal show={open} className="grave-modal">
@@ -131,8 +157,7 @@ console.log(initialData.healthLevel)
           </Modal.Header>
           <GravePicker />
         </Modal>
-        {/* This div only renders when the user chooses a pet.  */}
-        <div className={showPet ? "pet-dec-card" : "pet-dec-card-hide"}>
+        <div className={showPetDiv ? "pet-dec-card": "pet-dec-card-hide"}>
           <img
             className="foodBowl"
             alt="food bowl"
