@@ -42,6 +42,10 @@
   padding-right: 20px;
 }
 
+.pet-dec-card-hide {
+  display: none;
+}
+
 .cemetery {
   width: 250px;
 }
@@ -56,6 +60,10 @@
   border-radius: 15px;
 }
 
+.graveyard-button-hide {
+  display: none;
+}
+
 .graveyard-button:hover {
   background-color: darkblue;
   box-shadow: 0 0 0 1px darkblue;
@@ -68,6 +76,15 @@
   font-size: 22px;
   top: 110px;
   left: 400px;
+}
+
+.button-card-indiv {
+  background-color: black;
+  border-radius: 15px;
+  position: relative;
+  font-size: 22px;
+  top: 110px;
+  left: 250px;
 }
 
 .button-card:hover {
@@ -139,12 +156,14 @@ input {
   top: 400px;
 }
 
+.jump-button-hide {
+  display: none;
+}
+
 .jump-button:hover {
   background-color: darkblue;
   box-shadow: 0 0 0 1px darkblue;
 }
-
-
 
 @media (min-width: 1920px) {
   .pet-dec-card {

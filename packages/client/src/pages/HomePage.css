@@ -1,6 +1,7 @@
 body {
   height: 100vh;
   width: 100vw;
+  padding-top: 80px;
   background-color: green;
   display: flex;
   flex-direction: column;
@@ -14,7 +15,7 @@ body {
 
 #logo {
   position: relative;
-  animation: fill 0.5s ease forwards 5s;
+  animation: fill 0.5s ease forwards 3s;
   padding-top: 0;
   margin-top: 0;
 }
@@ -32,61 +33,61 @@ body {
 #logo path:nth-child(3) {
   stroke-dasharray: 259.2702331542969;
   stroke-dashoffset: 259.2702331542969;
-  animation: line-anim 2s ease forwards 0.3s;
+  animation: line-anim 2s ease forwards 0.2s;
 }
 
 #logo path:nth-child(4) {
   stroke-dasharray: 221.40672302246094;
   stroke-dashoffset: 221.40672302246094;
-  animation: line-anim 2s ease forwards 0.6s;
+  animation: line-anim 2s ease forwards 0.4s;
 }
 
 #logo path:nth-child(5) {
   stroke-dasharray: 329.2743225097656;
   stroke-dashoffset: 329.2743225097656;
-  animation: line-anim 2s ease forwards 0.9s;
+  animation: line-anim 2s ease forwards 0.6s;
 }
 
 #logo path:nth-child(6) {
   stroke-dasharray: 259.2705078125;
   stroke-dashoffset: 259.2705078125;
-  animation: line-anim 2s ease forwards 1.2s;
+  animation: line-anim 2s ease forwards 0.8s;
 }
 
 #logo path:nth-child(7) {
   stroke-dasharray: 221.4069366455078;
   stroke-dashoffset: 221.4069366455078;
-  animation: line-anim 2s ease forwards 1.5s;
+  animation: line-anim 2s ease forwards 1s;
 }
 
 #logo path:nth-child(8) {
   stroke-dasharray: 290.60797119140625;
   stroke-dashoffset: 290.60797119140625;
-  animation: line-anim 2s ease forwards 1.8s;
+  animation: line-anim 2s ease forwards 1.2s;
 }
 
 #logo path:nth-child(9) {
   stroke-dasharray: 482.23486328125;
   stroke-dashoffset: 482.23486328125;
-  animation: line-anim 2s ease forwards 2.1s;
+  animation: line-anim 2s ease forwards 1.4s;
 }
 
 #logo path:nth-child(10) {
   stroke-dasharray: 405.10723876953125;
   stroke-dashoffset: 405.10723876953125;
-  animation: line-anim 2s ease forwards 2.4s;
+  animation: line-anim 2s ease forwards 1.6s;
 }
 
 #logo path:nth-child(11) {
   stroke-dasharray: 356.0116271972656;
   stroke-dashoffset: 356.0116271972656;
-  animation: line-anim 2s ease forwards 2.7s;
+  animation: line-anim 2s ease forwards 1.8s;
 }
 
 #logo path:nth-child(12) {
   stroke-dasharray: 290;
   stroke-dashoffset: 290;
-  animation: line-anim 2s ease forwards 3s;
+  animation: line-anim 2s ease forwards 2s;
 }
 
 @keyframes line-anim {
@@ -138,6 +139,25 @@ body {
   animation: jiggle 0.5s infinite;
 }
 
+.para-left {
+  position: absolute;
+  font-size: larger;
+  border-left: 20px rgb(151, 32, 32) solid;
+  border-right: 20px rgb(151, 32, 32) solid;
+  background-color: rgb(0, 80, 0);
+  color: white;
+  border-radius: 15px;
+  bottom: -400px;
+  left: 350px;
+  max-width: 750px;
+  max-height: 830px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+}
+
 @keyframes jiggle {
   0% {
     transform: rotate(0deg);
@@ -186,5 +206,92 @@ body {
 
   .newUser {
     margin-left: 15%;
+  }
+}
+
+@media (max-width: 1189px) {
+  .para-left {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(151, 32, 32) solid;
+    border-right: 20px rgb(151, 32, 32) solid;
+    background-color: rgb(0, 80, 0);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 250px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+
+
+}
+
+@media (max-width: 1088px) {
+  .para-left {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(151, 32, 32) solid;
+    border-right: 20px rgb(151, 32, 32) solid;
+    background-color: rgb(0, 80, 0);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 180px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 988px) {
+  .para-left {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(151, 32, 32) solid;
+    border-right: 20px rgb(151, 32, 32) solid;
+    background-color: rgb(0, 80, 0);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 120px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 988px) {
+  .para-left {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(151, 32, 32) solid;
+    border-right: 20px rgb(151, 32, 32) solid;
+    background-color: rgb(0, 80, 0);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 50px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
   }
 }

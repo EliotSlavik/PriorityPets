@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import PetPicker from "../components/PetPicker";
 import "./PetPage.css";
 import { Modal, Button } from "react-bootstrap";
@@ -7,7 +7,22 @@ import NavBar from "../components/Navbar.js";
 import { motion } from "framer-motion";
 //import PetGame from "../components/PetGame";
 
-const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
+const imgs = [
+  "/x2/Cat_Down@2x.png",
+  "/x2/Chick_Down@2x.png",
+  "/x2/Fox_Down@2x.png",
+  "/x2/Mouse_Down@2x.png",
+  "/x2/Pig_Down@2x.png",
+  "/x2/Rabbit_Down@2x.png",
+];
+
+
+const initialData = {
+  name: "",
+  appearance: "",
+  healthLevel: 100,
+};
+
 
 function PetPage() {
   const [show, setShow] = useState(false);
@@ -15,7 +30,10 @@ function PetPage() {
   const [value, setValue] = useState(0);
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
   const [isActivated, setIsActivated] = useState(false);
-
+  const [showPet, setShowPet] = useState(false)
+  const [showButton, setShowButton] = useState(false)
+ 
+console.log(initialData.healthLevel)
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -36,23 +54,27 @@ function PetPage() {
 
   const handlePetSelection = (event) => {
     setShow(false);
+    setShowPet(true)
+    setShowButton(true)
   };
 
   const handleButtonClick = () => {
     setIsActivated(!isActivated);
   };
 
+  
   return (
     <>
       <div className="main-background-div">
         <NavBar />
         <h1 className="pet-title">Welcome To Your Pet's Page</h1>
-        <Button className="button-card" onClick={openModal}>
+        {/* This button renders differently on the page when the health is greater than 0. */}
+        <Button className={initialData.healthLevel <= 0 ? "button-card" : "button-card-indiv"} onClick={openModal}>
           Choose Your Pet
         </Button>
         {/*<PetGame />*/}
-
-        <Button className="jump-button" onClick={handleButtonClick}>
+        {/* This button renders when the user chooses the pet */}
+        <Button className={showButton ? "jump-button" : "jump-button-hide"} onClick={handleButtonClick}>
           Wanna See Me Jump?
         </Button>
 
@@ -78,13 +100,19 @@ function PetPage() {
           >
             Welcome To The Pet Store
           </Modal.Header>
-          <PetPicker selected={selectedPet} setSelected={setSelectedPet} imgs={imgs} handlePetSelection={handlePetSelection} />
+          <PetPicker
+            selected={selectedPet}
+            setSelected={setSelectedPet}
+            imgs={imgs}
+            handlePetSelection={handlePetSelection}
+          
+          />
           <Button onClick={handlePetSelection} className="handle-pet-btn">
             Choose
           </Button>
         </Modal>
-
-        <Button className="graveyard-button" onClick={openGraveModal}>
+            {/* The cemetary button only renders when the health is 0 */}
+        <Button className={initialData.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"} onClick={openGraveModal}>
           Visit Pet Cemetary
         </Button>
         <Modal show={open} className="grave-modal">
@@ -103,8 +131,13 @@ function PetPage() {
           </Modal.Header>
           <GravePicker />
         </Modal>
-        <div className="pet-dec-card">
-          <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
+        {/* This div only renders when the user chooses a pet.  */}
+        <div className={showPet ? "pet-dec-card" : "pet-dec-card-hide"}>
+          <img
+            className="foodBowl"
+            alt="food bowl"
+            src="/accessories/foodbowl.png"
+          />
 
           <img
             className="waterBowl"
