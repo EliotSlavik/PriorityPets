@@ -5,23 +5,17 @@ import { petContext } from "../contexts/petContext";
 
 const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
-const PetPicker = ({ petName,setPetApperance,setPetName, selected, setSelectedPet }) => {
-  const { pet, setPet } = useContext(petContext);
-  const [formData, setFormData] = useState({
-    name: "",
-    appearance: "",
-    healthLevel: 100,
-  }); 
+const PetPicker = ({ selected,formData,setFormData, setSelectedPet }) => {
 
   const handlePetSelection = (pet) => {
     setSelectedPet(pet);
-    console.log(pet);
-    setPetApperance(pet)
     setFormData({ ...formData, appearance: pet });
   };
   
   const handleNameChange = (e) => {
-    setPetName(e.target.value);
+    // console.log(e.target.value);
+    let name = e.target.value
+    setFormData({...formData, name: name })
   };
 
 
@@ -44,7 +38,6 @@ const PetPicker = ({ petName,setPetApperance,setPetName, selected, setSelectedPe
         <input
           type="text"
           id="petName"
-          value={petName}
           onChange={handleNameChange}
         />
       </div>

@@ -27,15 +27,15 @@ function PetPage() {
   const [showJumpButton, setShowJumpButton] = useState(false)
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
-  const [petName, setPetName] = useState("");
-  const [petApperance, setPetApperance] = useState("");
-  const { pet, setPet } = useContext(petContext);
+    const { pet, setPet } = useContext(petContext);
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
     healthLevel: 100,
     userId: auth.user._id,
   });
+
+  console.log(formData);
 
   const openModal = (e) => {
     e.preventDefault();
@@ -57,21 +57,17 @@ function PetPage() {
 
   const handlePetSelection = async (event) => {
     setFormData({
-      name: petName,
-      appearance: petApperance,
+      name: formData.name,
+      appearance: formData.appearance,
       userId: auth.user._id,
     });
     setShow(false);
     setShowPetDiv(true)
     setShowJumpButton(true)
     console.log(formData);
-    console.log(auth.user._id);
+    setShow(false);
     try {
-      const response = await axios.post("pets/", {
-        name: "kinggeorge",
-        appearance: "/x2/Pig_Down@2x.png",
-        userId: auth.user._id,
-      }); //formData);
+      const response = await axios.post("pets/", formData);
       console.log("Updated pet:", response.data);
       //  setPet(response.data.pet);
     } catch (error) {
@@ -123,11 +119,7 @@ function PetPage() {
           </Modal.Header>
           <PetPicker
             selected={selectedPet}
-            petApperance={petApperance}
-            petName={petName}
-            setPetApperance={setPetApperance}
             setSelectedPet={setSelectedPet}
-            setPetName={setPetName}
             formData={formData}
             setFormData={setFormData}
             imgs={imgs}
