@@ -20,19 +20,20 @@ const useAuth = () => {
 
   const signIn = async (email, password, onError) => {
     if (email !== "" && password !== "") {
-      api
-        .post("/auth/signin", { email, password })
-        .then((response) => {
-          const { token, user } = response.data;
+      try {
+        const response = await api.post("/auth/signin", { email, password });
+        const { token, user } = response.data;
 
-          setAuth({ isAuthenticated: true, user: user });
-          setAuthHeaders(token);
+        setAuth({ isAuthenticated: true, user: user });
+        setAuthHeaders(token);
 
-          navigate("/TaskPage");
-        })
-        .catch((error) => {
-          onError(error);
-        });
+        navigate("/TaskPage");
+
+        // Return user object after successful sign in
+        return user;
+      } catch (error) {
+        onError(error);
+      }
     }
   };
 

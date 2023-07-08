@@ -8,7 +8,8 @@ import "./TaskManagement.css";
 import axios from "../util/axiosConfig";
 
 const bgColor = ["khaki", "orange", "orangered"];
-function TaskManagement() {
+
+function TaskManagement({ userEmail }) {
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -38,6 +39,7 @@ function TaskManagement() {
   };
 
   const handleAddTask = () => {
+    console.log(userEmail)
     const newTask = {
       name,
       description,
@@ -46,22 +48,21 @@ function TaskManagement() {
       dueDate,
       reminder,
       completed: false,
+      userEmail,  // Add userEmail to the new task
     };
 
-    setTasks([...tasks, newTask]);
-console.log(tasks)
-console.log({newTask: name})
-    //put axios logic here
+    // Put axios logic here
     axios
-      .post("/", {...newTask})
+      .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
         console.log(response.data);
+        setTasks([...tasks, newTask]);
       })
       .catch((error) => {
         console.log(error);
-        //onError(error);
+        // onError(error);
       });
-    //end axios logic
+    // End axios logic
 
     // Clear input fields
     setName("");
@@ -93,6 +94,7 @@ console.log({newTask: name})
       priority: editPriority,
       dueDate: editDueDate,
       reminder: editReminder,
+      userEmail,  // Add userEmail to the edited task
     };
     updatedTasks[editIndex] = editedTask;
     setTasks(updatedTasks);
@@ -106,29 +108,53 @@ console.log({newTask: name})
   };
 
   const openEditModal = (index) => {
-    const task = tasks[index];
+    const taskToEdit = tasks[index];
+    setEditName(taskToEdit.name);
+    setEditDescription(taskToEdit.description);
+    setEditPriority(taskToEdit.priority);
+    setEditDueDate(taskToEdit.dueDate);
+    setEditReminder(taskToEdit.reminder);
     setEditIndex(index);
-    setEditName(task.name);
-    setEditDescription(task.description);
-    setEditPriority(task.priority);
-    setEditDueDate(task.dueDate);
-    setEditReminder(task.reminder);
     setShowEditModal(true);
   };
 
-  useEffect(() => {
-    tasks.forEach((task) => {
-      if (!task.completed && task.reminder && task.dueDate) {
-        const now = moment();
-        const reminderTime = moment(task.dueDate).subtract(moment(task.reminder).hours(), "hours").subtract(moment(task.reminder).minutes(), "minutes");
-        if (now.isSameOrAfter(reminderTime)) {
-          setTimeout(() => {
-            alert(`Reminder: ${task.name}`);
-          }, reminderTime.diff(now));
-        }
+  const closeEditModal = () => {
+    setShowEditModal(false);
+  };
+
+useEffect(() => {
+  tasks.forEach((task, index) => {
+    const dueDate = moment(task.dueDate);
+    const now = moment();
+    const diff = dueDate.diff(now, "minutes");
+    const element = document.getElementById(index); // Get the element with the ID 'index'
+    if (element) { // Check if the element exists
+      if (diff < 30) {
+        element.style.backgroundColor = bgColor[2];
+      } else if (diff < 60) {
+        element.style.backgroundColor = bgColor[1];
+      } else {
+        element.style.backgroundColor = bgColor[0];
       }
-    });
-  }, [tasks]);
+    }
+  });
+}, [tasks]);
+
+  useEffect(() => {
+    // Fetch tasks for the current user
+    axios
+      .get("/tasks", { params: { userEmail } })
+      .then((response) => {
+        setTasks(response.data);
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error);
+        //onError(error);
+      });
+
+
+  }, [userEmail]);
 
   return (
     <>
@@ -177,6 +203,7 @@ console.log({newTask: name})
             <ol>
               <li
                 className="task"
+                id={index} // Add the ID 'index' to the list item
                 style={{
                   backgroundColor: bgColor[task.priority],
                 }}
