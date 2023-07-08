@@ -9,10 +9,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import useAuth from "./hooks/useAuth";
 
 function App() {
-  const { auth, setAuth } = useContext(authContext);
-  console.log("App: " + auth);
+  const { auth } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+  const [userEmail, setUserEmail] = useState("");
 
   const handleLogin = (email) => {
     setUserEmail(email);
@@ -20,10 +19,9 @@ function App() {
   };
 
   const handleLogout = () => {
-    setUserEmail('');
+    setUserEmail("");
     setIsLoggedIn(false);
   };
-
 
   return (
     <>
