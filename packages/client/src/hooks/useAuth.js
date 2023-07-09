@@ -37,6 +37,13 @@ const useAuth = () => {
     }
   };
 
+  const setCurrentPet = (petData) => {
+    const updatedUser = { ...auth.user };
+    updatedUser.pets.currentPet = petData;
+
+    setAuth({ ...auth, user: updatedUser });
+  };
+
   const signOut = () => {
     setAuth({ isAuthenticated: false, user: null }); // Update auth state
 
@@ -52,6 +59,7 @@ const useAuth = () => {
     signUp,
     signIn,
     signOut,
+    setCurrentPet,
   };
 };
 
