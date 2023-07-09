@@ -5,8 +5,6 @@ import { authContext } from "../contexts/authContext";
 
 const ProtectedRoute = () => {
   const { auth, setAuth } = useContext(authContext);
-  console.log("appel");
-  //let auth = JSON.parse(localStorage.getItem("PriorityUser"));
 
   if (auth.isAuthenticated === false) {
     return <Navigate to="/" />;

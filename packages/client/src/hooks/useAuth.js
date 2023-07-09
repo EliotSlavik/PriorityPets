@@ -37,7 +37,15 @@ const useAuth = () => {
     }
   };
 
-  const signOut = () => {};
+  const signOut = () => {
+    setAuth({ isAuthenticated: false, user: null }); // Update auth state
+
+    // Clear local storage
+    localStorage.removeItem("PriorityUser");
+
+    // Navigate to "/"
+    navigate("/");
+  };
 
   return {
     auth,
