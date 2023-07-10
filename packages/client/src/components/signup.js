@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axios from "../util/axiosConfig";
 import useAuth from "../hooks/useAuth";
+import "./Signup.css";
 
 const Signup = ({ showModal, handleCloseModal, onError }) => {
-  const [data, setData] = useState({ username: "", password: "", email: "", confirmPassword: "" });
+  const [data, setData] = useState({
+    username: "",
+    password: "",
+    email: "",
+    confirmPassword: "",
+  });
   const { signUp } = useAuth();
 
   const handleInputChange = (e) => {
@@ -19,17 +25,51 @@ const Signup = ({ showModal, handleCloseModal, onError }) => {
   };
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
-      <Modal.Header closeButton>
-        <Modal.Title>Signup</Modal.Title>
+    <Modal
+      show={showModal}
+      onHide={handleCloseModal}
+      style={{ backgroundColor: "transparent" }}
+    >
+      <Modal.Header closeButton className="signup-header">
+        <Modal.Title>Signup (Please complete all fields)</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="sign-up-modal">
         <form onSubmit={handleSignup}>
-          <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleInputChange} />
-          <input type="text" name="username" placeholder="Username" value={data.username} onChange={handleInputChange} />
-          <input type="password" name="password" placeholder="Password" value={data.password} onChange={handleInputChange} />
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" value={data.confirmPassword} onChange={handleInputChange} />
-          <Button type="submit">Signup</Button>
+          <input
+            className="sign-up-input1"
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={data.email}
+            onChange={handleInputChange}
+          />
+          <input
+            className="sign-up-input2"
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={data.username}
+            onChange={handleInputChange}
+          />
+          <input
+            className="sign-up-input3"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={data.password}
+            onChange={handleInputChange}
+          />
+          <input
+            className="sign-up-input4"
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={data.confirmPassword}
+            onChange={handleInputChange}
+          />
+          <Button className="sign-up-button" type="submit">
+            Signup
+          </Button>
         </form>
       </Modal.Body>
     </Modal>

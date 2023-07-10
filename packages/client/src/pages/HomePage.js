@@ -155,8 +155,7 @@ function HomePage({ handleLogin }) {
         handleCloseModal={handleCloseSignupModal}
         onError={handleError}
       />
-      {/* <Modal show={showInfoModal}> */}
-      <p className="para-left">
+      <p className="para-home-page">
         Welcome to our amazing Priority Pet app with a delightful twist! Our
         innovative application combines the functionality of a traditional task
         manager with the joy of taking care of a virtual pet.
@@ -169,7 +168,7 @@ function HomePage({ handleLogin }) {
         ensuring you never miss a beat.
         <br></br>
         <br></br>
-        Priority Pet is designed to bring joy, gamification, and a sense of
+        Priority Pet is designed to bring joy and a sense of
         accomplishment to your daily routine. Stay organized, complete tasks,
         and experience the satisfaction of caring for your virtual pet – all in
         one convenient application.

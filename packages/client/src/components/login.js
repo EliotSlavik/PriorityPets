@@ -23,14 +23,50 @@ const Login = ({ showModal, handleCloseModal, onError, onLogin }) => {
 
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
-      <Modal.Header closeButton>
+      <Modal.Header
+        closeButton
+        style={{
+          fontSize: "x-large",
+          color: "white",
+          backgroundColor: "green",
+          marginBottom: "-1px",
+        }}
+      >
         <Modal.Title>Login</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ backgroundColor: "green" }}>
         <form onSubmit={handleLogin}>
-          <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleInputChange} />
-          <input type="password" name="password" placeholder="Password" value={data.password} onChange={handleInputChange} />
-          <Button type="submit">Login</Button>
+          <input
+            style={{ fontSize: "20px", borderRadius: "8px" }}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={data.email}
+            onChange={handleInputChange}
+          />
+          <input
+            style={{
+              fontSize: "20px",
+              marginLeft: "20px",
+              borderRadius: "8px",
+            }}
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={data.password}
+            onChange={handleInputChange}
+          />
+          <Button
+            style={{
+              fontSize: "x-large",
+              marginLeft: "184px",
+              marginTop: "30px",
+              borderRadius: "12px",
+            }}
+            type="submit"
+          >
+            Login
+          </Button>
         </form>
       </Modal.Body>
     </Modal>

@@ -139,7 +139,7 @@ body {
   animation: jiggle 0.5s infinite;
 }
 
-.para-left {
+.para-home-page {
   position: absolute;
   font-size: larger;
   border-left: 20px rgb(151, 32, 32) solid;
