@@ -16,7 +16,9 @@ router.post("/signup", async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
 
-    let user = await User.findOne({ email: email });
+    const lowercaseEmail = email.toLowerCase();
+
+    let user = await User.findOne({ email: lowercaseEmail });
 
     if (user)
       return res.status(422).json({
@@ -42,7 +44,9 @@ router.post("/signin", async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    let user = await User.findOne({ email: email });
+    const lowercaseEmail = email.toLowerCase();
+
+    let user = await User.findOne({ email: lowercaseEmail });
 
     if (!user) {
       return res.status(401).json({
@@ -63,7 +67,7 @@ router.post("/signin", async (req, res, next) => {
       });
     }
 
-    const accessToken = jwt.sign({ sub: email }, keys.auth.accessTokenSecret, {
+    const accessToken = jwt.sign({ sub: lowercaseEmail }, keys.auth.accessTokenSecret, {
       expiresIn: keys.auth.accessTokenExp,
     });
 

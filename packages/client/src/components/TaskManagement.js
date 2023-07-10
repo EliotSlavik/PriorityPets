@@ -6,9 +6,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Modal } from "react-bootstrap";
 import "./TaskManagement.css";
 import axios from "../util/axiosConfig";
+import useAuth from "../hooks/useAuth";
 
 const bgColor = ["khaki", "orange", "orangered"];
-function TaskManagement() {
+
+function TaskManagement({ userEmail }) {
+  const { auth } = useAuth();
+
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -38,6 +42,7 @@ function TaskManagement() {
   };
 
   const handleAddTask = () => {
+    console.log(userEmail);
     const newTask = {
       name,
       description,
@@ -46,22 +51,21 @@ function TaskManagement() {
       dueDate,
       reminder,
       completed: false,
+      userEmail, // Add userEmail to the new task
     };
 
-    setTasks([...tasks, newTask]);
-console.log(tasks)
-console.log({newTask: name})
-    //put axios logic here
+    // Put axios logic here
     axios
-      .post("/", {...newTask})
+      .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
         console.log(response.data);
+        setTasks([...tasks, newTask]);
       })
       .catch((error) => {
         console.log(error);
-        //onError(error);
+        // onError(error);
       });
-    //end axios logic
+    // End axios logic
 
     // Clear input fields
     setName("");
@@ -71,20 +75,28 @@ console.log({newTask: name})
     setReminder(new Date());
   };
 
-  const handleDeleteTask = (index) => {
+  const handleDeleteTask = (index, _id) => {
     const updatedTasks = [...tasks];
     updatedTasks.splice(index, 1);
     setTasks(updatedTasks);
   };
 
-  const handleCompleteTask = (index) => {
+  const handleCompleteTask = (index, _id) => {
     const updatedTasks = [...tasks];
     updatedTasks[index].completed = !updatedTasks[index].completed; // Toggle the completed value back and forth
     setTasks(updatedTasks);
+    axios
+      .put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // Edit task
-  const handleEditTask = () => {
+  const handleEditTask = (_id) => {
     const updatedTasks = [...tasks];
     const editedTask = {
       ...updatedTasks[editIndex],
@@ -93,6 +105,7 @@ console.log({newTask: name})
       priority: editPriority,
       dueDate: editDueDate,
       reminder: editReminder,
+      userEmail, // Add userEmail to the edited task
     };
     updatedTasks[editIndex] = editedTask;
     setTasks(updatedTasks);
@@ -106,44 +119,66 @@ console.log({newTask: name})
   };
 
   const openEditModal = (index) => {
-    const task = tasks[index];
+    const taskToEdit = tasks[index];
+    setEditName(taskToEdit.name);
+    setEditDescription(taskToEdit.description);
+    setEditPriority(taskToEdit.priority);
+    setEditDueDate(taskToEdit.dueDate);
+    setEditReminder(taskToEdit.reminder);
     setEditIndex(index);
-    setEditName(task.name);
-    setEditDescription(task.description);
-    setEditPriority(task.priority);
-    setEditDueDate(task.dueDate);
-    setEditReminder(task.reminder);
     setShowEditModal(true);
   };
 
+  const closeEditModal = () => {
+    setShowEditModal(false);
+  };
+
   useEffect(() => {
-    tasks.forEach((task) => {
-      if (!task.completed && task.reminder && task.dueDate) {
-        const now = moment();
-        const reminderTime = moment(task.dueDate).subtract(moment(task.reminder).hours(), "hours").subtract(moment(task.reminder).minutes(), "minutes");
-        if (now.isSameOrAfter(reminderTime)) {
-          setTimeout(() => {
-            alert(`Reminder: ${task.name}`);
-          }, reminderTime.diff(now));
+    tasks.forEach((task, index) => {
+      const dueDate = moment(task.dueDate);
+      const now = moment();
+      const diff = dueDate.diff(now, "minutes");
+      const element = document.getElementById(index); // Get the element with the ID 'index'
+      if (element) {
+        // Check if the element exists
+        if (diff < 30) {
+          element.style.backgroundColor = bgColor[2];
+        } else if (diff < 60) {
+          element.style.backgroundColor = bgColor[1];
+        } else {
+          element.style.backgroundColor = bgColor[0];
         }
       }
     });
   }, [tasks]);
 
+  useEffect(() => {
+    // Fetch tasks for the current user
+    axios
+      .get("/tasks", { params: { userEmail } })
+      .then((response) => {
+        setTasks(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        //onError(error);
+      });
+  }, [userEmail]);
+
   return (
     <>
-      <div className="div-card2" >
+      <div className="div-card2">
         <Button className="modalButton" onClick={openModal}>
           Add Task
         </Button>
-        <Modal className="modal" show={show} onHide={closeModal}  >
-          <Modal.Header closeButton style={{marginBottom: "-60px", backgroundColor: "green", fontSize: "30px"}}></Modal.Header>
+        <Modal className="modal" show={show} onHide={closeModal}>
+          <Modal.Header closeButton style={{ marginBottom: "-60px", backgroundColor: "green", fontSize: "30px" }}></Modal.Header>
           <div
             className="container mt-5"
             style={{
               backgroundColor: "green",
               borderRadius: "20px",
-              marginBottom: "-580px"
+              marginBottom: "-580px",
             }}
           >
             <h1 className="mb-4" style={{ color: "white" }}>
@@ -161,22 +196,23 @@ console.log({newTask: name})
               <span className="dueDateSpan">Set Due Date</span>
               <DateTimePicker className="form-control mb-2 datePicker" value={dueDate} onChange={(date) => setDueDate(date)} placeholder="Due Date" />
               <span className="dueDateSpan">Set Reminder</span>
-              <DateTimePicker className="form-control mb-2 datePicker"  value={reminder} onChange={(date) => setReminder(date)} placeholder="Reminder" />
-              <Button className="float-right mt-3" style={{ borderRadius: "10px"}} onClick={handleAddTask}>
+              <DateTimePicker className="form-control mb-2 datePicker" value={reminder} onChange={(date) => setReminder(date)} placeholder="Reminder" />
+              <Button className="float-right mt-3" style={{ borderRadius: "10px" }} onClick={handleAddTask}>
                 Add Task
               </Button>
-              <Button className="float-right mt-3" style={{ marginLeft: "20px", borderRadius: "10px"}} onClick={closeModal}>
+              <Button className="float-right mt-3" style={{ marginLeft: "20px", borderRadius: "10px" }} onClick={closeModal}>
                 Close
               </Button>
             </div>
           </div>
         </Modal>
-
+        {console.log(tasks)}
         {tasks.map((task, index) => (
           <div key={index} className="listDiv">
             <ol>
               <li
                 className="task"
+                id={index} // Add the ID 'index' to the list item
                 style={{
                   backgroundColor: bgColor[task.priority],
                 }}
@@ -184,7 +220,7 @@ console.log({newTask: name})
                 <div className="holder">
                   {
                     //removed the code that crosses out the check box
-                    <input type="checkbox" name="completed" className="completed" checked={task.completed} onChange={() => handleCompleteTask(index)} />
+                    <input type="checkbox" name="completed" className="completed" checked={task.completed} onChange={() => handleCompleteTask(index, task._id)} />
                   }
                   <span
                     style={{
@@ -212,7 +248,7 @@ console.log({newTask: name})
                     <span className="para">Due: {task.dueDate ? moment(task.dueDate).format("ddd MMM DD 'YY h:mm") : "-"}</span>
                     <br></br>
                     <span className="para">REM: {task.reminder ? moment(task.reminder).format("ddd MMM DD 'YY h:mm") : "-"}</span>
-                    <button className="edit-button"  onClick={() => openEditModal(index)}>
+                    <button className="edit-button" onClick={() => openEditModal(index)}>
                       Edit
                     </button>
 
@@ -221,7 +257,7 @@ console.log({newTask: name})
                       show={showEditModal}
                       onHide={() => setShowEditModal(false)}
                     >
-                      <Modal.Header closeButton style={{backgroundColor: "green", fontSize: "30px", marginBottom: "-70px"}}></Modal.Header>
+                      <Modal.Header closeButton style={{ backgroundColor: "green", fontSize: "30px", marginBottom: "-70px" }}></Modal.Header>
                       <div
                         className="container mt-5"
                         style={{
@@ -246,7 +282,7 @@ console.log({newTask: name})
                           <DateTimePicker className="form-control mb-2 datePicker" value={editDueDate} onChange={(date) => setEditDueDate(date)} placeholder="Due Date" />
                           <span className="dueDateSpan">Set Reminder</span>
                           <DateTimePicker className="form-control mb-2 datePicker" value={editReminder} onChange={(date) => setEditReminder(date)} placeholder="Reminder" />
-                          <Button className="float-right mt-3" onClick={handleEditTask}>
+                          <Button className="float-right mt-3" onClick={() => handleEditTask(task._id)}>
                             Save Changes
                           </Button>
                           <Button className="float-right mt-3" style={{ marginLeft: "20px" }} onClick={() => setShowEditModal(false)}>
@@ -256,7 +292,11 @@ console.log({newTask: name})
                       </div>
                     </Modal>
 
-                    <Button className="btn btn-danger deleteButtonTask" style={{ marginLeft: "30px", borderRadius: "10px", fontSize: "larger", marginBottom: "5px"}} onClick={() => handleDeleteTask(index)}>
+                    <Button
+                      className="btn btn-danger deleteButtonTask"
+                      style={{ marginLeft: "30px", borderRadius: "10px", fontSize: "larger", marginBottom: "5px" }}
+                      onClick={() => handleDeleteTask(index, task._id)}
+                    >
                       Delete Task
                     </Button>
                   </div>

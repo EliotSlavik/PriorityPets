@@ -9,7 +9,7 @@ import NavBar from "../components/Navbar";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function HomePage() {
+function HomePage({ handleLogin }) {
   const [showLoginModal, setLoginShowModal] = useState(false);
   const [showSignupModal, setSignupShowModal] = useState(false);
 
@@ -146,16 +146,8 @@ function HomePage() {
       >
         Login
       </Button>
-      <Login
-        showModal={showLoginModal}
-        handleCloseModal={handleCloseLoginModal}
-        onError={handleError}
-      />
-      <Button
-        className="button-33"
-        variant="primary"
-        onClick={handleOpenSignupModal}
-      >
+      <Login showModal={showLoginModal} handleCloseModal={handleCloseLoginModal} onLogin={handleLogin} onError={handleError} />
+      <Button className="button-33" variant="primary" onClick={handleOpenSignupModal}>
         Signup
       </Button>
       <Signup

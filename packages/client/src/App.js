@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import TaskPage from "./pages/TaskPage";
 import HomePage from "./pages/HomePage";
@@ -10,17 +10,27 @@ import useAuth from "./hooks/useAuth";
 
 function App() {
   const { auth } = useAuth();
-  console.log(auth);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+
+  const handleLogin = (email) => {
+    setUserEmail(email);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setUserEmail("");
+    setIsLoggedIn(false);
+  };
 
   return (
     <>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={auth.isAuthenticated ? <Navigate to="/TaskPage" replace /> : <HomePage />} />
+        <Route path="/" element={auth.isAuthenticated ? <Navigate to="/TaskPage" replace /> : <HomePage handleLogin={handleLogin} handleLogout={handleLogout} />} />
         <Route element={<ProtectedRoute />}>
-          {/* Potentially bugged but I haven't run into one yet. */}
           <Route path="/PetPage" element={<PetPage />} />
-          <Route path="/TaskPage" element={<TaskPage />} />
+          <Route path="/TaskPage" element={<TaskPage isLoggedIn={isLoggedIn} userEmail={userEmail} />} />
         </Route>
       </Routes>
     </>

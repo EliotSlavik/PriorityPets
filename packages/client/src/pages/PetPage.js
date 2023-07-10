@@ -1,23 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useState, onEffect } from "react";
 import PetPicker from "../components/PetPicker";
 import "./PetPage.css";
 import { Modal, Button } from "react-bootstrap";
 import GravePicker from "../components/GravePicker";
 import NavBar from "../components/Navbar.js";
 import { motion } from "framer-motion";
-import axios from "../util/axiosConfig";
-import { petContext } from "../contexts/petContext";
 import useAuth from "../hooks/useAuth";
-import { formToJSON } from "axios";
+import usePet from "../hooks/usePet";
 
-const imgs = [
-  "/x2/Cat_Down@2x.png",
-  "/x2/Chick_Down@2x.png",
-  "/x2/Fox_Down@2x.png",
-  "/x2/Mouse_Down@2x.png",
-  "/x2/Pig_Down@2x.png",
-  "/x2/Rabbit_Down@2x.png",
-];
+const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
 function PetPage() {
   const [show, setShow] = useState(false);
@@ -28,7 +19,8 @@ function PetPage() {
   const [showJumpButton, setShowJumpButton] = useState(false)
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
-  const { pet, setPet } = useContext(petContext);
+  const { pet } = usePet();
+  const { createPet } = usePet();
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
@@ -61,17 +53,9 @@ function PetPage() {
       appearance: formData.appearance,
       userId: auth.user._id,
     });
-    setShow(false);
-    setShowPetDiv(true)
-    setShowJumpButton(true)
-    console.log(formData);
-    setShow(false);
-    try {
-      const response = await axios.post("pets/", formData);
-      console.log("Updated pet:", response.data);
-      //  setPet(response.data.pet);
-    } catch (error) {
-      console.log("Error occurred while updating the pet:", error);
+    if (formData.name !== "") {
+      setShow(false);
+      createPet(formData.name, formData.appearance, formData.userId);
     }
   };
 
@@ -117,14 +101,7 @@ function PetPage() {
           >
             Welcome To The Pet Store
           </Modal.Header>
-          <PetPicker
-            selected={selectedPet}
-            setSelectedPet={setSelectedPet}
-            formData={formData}
-            setFormData={setFormData}
-            imgs={imgs}
-            handlePetSelection={handlePetSelection}
-          />
+          <PetPicker selected={selectedPet} setSelectedPet={setSelectedPet} formData={formData} setFormData={setFormData} imgs={imgs} handlePetSelection={handlePetSelection} />
           <Button onClick={handlePetSelection} className="handle-pet-btn">
             Choose
           </Button>
@@ -156,22 +133,9 @@ function PetPage() {
             src="/accessories/foodbowl.png"
           />
 
-          <img
-            className="waterBowl"
-            alt="water bowl"
-            src="/accessories/waterbowl.png"
-          />
-          <motion.img
-            animate={{ x: value * 8 + "px" }}
-            className={isActivated ? "petty-move" : "petty"}
-            alt="pet"
-            src={selectedPet}
-          />
-          <img
-            className="petHouse"
-            alt="pet house"
-            src="/accessories/pethouse.png"
-          />
+          <img className="waterBowl" alt="water bowl" src="/accessories/waterbowl.png" />
+          <motion.img animate={{ x: value * 8 + "px" }} className={isActivated ? "petty-move" : "petty"} alt="pet" src={selectedPet} />
+          <img className="petHouse" alt="pet house" src="/accessories/pethouse.png" />
         </div>
         <div className="graveyard-holder"></div>
       </div>
