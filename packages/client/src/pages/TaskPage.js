@@ -9,7 +9,7 @@ function TaskPage() {
   return (
     <div className="mainTaskDiv" >
       <NavBar />
-      <h1 style={{ color: "white", fontWeight: "bold", fontSize: "60px" }}>User's Priorities</h1>
+    <h1 style={{ color: "white", fontWeight: "bold", fontSize: "60px" }}>{`${auth.user.username}'s Priorities `} </h1>
       <TaskManagement userEmail={auth.user.email} />
     </div>
   );

@@ -12,6 +12,7 @@ const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.p
 
 function PetPage() {
   const [show, setShow] = useState(false);
+  const [showPetName, setShowPetName] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0);
   const [isActivated, setIsActivated] = useState(false);
@@ -28,7 +29,7 @@ function PetPage() {
     userId: auth.user._id,
   });
 
-
+console.log(formData.name)
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -51,8 +52,7 @@ function PetPage() {
     setShow(false);
     setShowPetDiv(true)
     setShowJumpButton(true)
-    console.log(formData);
-    setShow(false);
+    setShowPetName(true)
     setFormData({
       name: formData.name,
       appearance: formData.appearance,
@@ -75,7 +75,8 @@ function PetPage() {
     <>
       <div className="main-background-div">
         <NavBar />
-        <h1 className="pet-title">Welcome To Your Pet's Page</h1>
+        <h1 className={showPetName ? "pet-title-hide" : "pet-title"}> Welcome To Your Pet's Page</h1>
+        <h1 className={showPetName ? "pet-title" : "pet-title-hide"}>{`${formData.name}'s Forever Home`}</h1>
         {/* This button renders differently on the page when the health is greater than 0. */}
         <Button className={formData.healthLevel <= 0 ? "button-card" : "button-card-indiv"} onClick={openModal}>
           Choose Your Pet

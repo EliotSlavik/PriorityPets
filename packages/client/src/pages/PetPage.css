@@ -108,6 +108,10 @@
   color: white;
 }
 
+.pet-title-hide {
+  display: none;
+}
+
 .grave {
   position: relative;
   right: 340px;
