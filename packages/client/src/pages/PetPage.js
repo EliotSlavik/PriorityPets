@@ -48,6 +48,11 @@ function PetPage() {
   };
 
   const handlePetSelection = async (event) => {
+    setShow(false);
+    setShowPetDiv(true)
+    setShowJumpButton(true)
+    console.log(formData);
+    setShow(false);
     setFormData({
       name: formData.name,
       appearance: formData.appearance,
@@ -59,6 +64,7 @@ function PetPage() {
     }
   };
 
+  
   const handleButtonClick = () => {
     handlePetSelection();
     setIsActivated(!isActivated);
