@@ -5,19 +5,17 @@ import { petContext } from "../contexts/petContext";
 
 const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
-const PetPicker = ({ selected,formData,setFormData, setSelectedPet }) => {
-
+const PetPicker = ({ selected, formData, setFormData, setSelectedPet }) => {
   const handlePetSelection = (pet) => {
     setSelectedPet(pet);
     setFormData({ ...formData, appearance: pet });
   };
-  
+
   const handleNameChange = (e) => {
     // console.log(e.target.value);
-    let name = e.target.value
-    setFormData({...formData, name: name })
+    let name = e.target.value;
+    setFormData({ ...formData, name: name });
   };
-
 
   return (
     <div className="pet-container">
@@ -35,11 +33,7 @@ const PetPicker = ({ selected,formData,setFormData, setSelectedPet }) => {
       </div>
       <div>
         <label htmlFor="petName">Pet Name:</label>
-        <input
-          type="text"
-          id="petName"
-          onChange={handleNameChange}
-        />
+        <input type="text" id="petName" onChange={handleNameChange} />
       </div>
     </div>
   );

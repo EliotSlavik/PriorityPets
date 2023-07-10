@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import axios from "../util/axiosConfig";
 import { petContext } from "../contexts/petContext";
 import useAuth from "../hooks/useAuth";
+import { formToJSON } from "axios";
 
 const imgs = [
   "/x2/Cat_Down@2x.png",
@@ -27,7 +28,7 @@ function PetPage() {
   const [showJumpButton, setShowJumpButton] = useState(false)
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
-    const { pet, setPet } = useContext(petContext);
+  const { pet, setPet } = useContext(petContext);
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
@@ -35,7 +36,6 @@ function PetPage() {
     userId: auth.user._id,
   });
 
-  console.log(formData);
 
   const openModal = (e) => {
     e.preventDefault();

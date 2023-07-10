@@ -68,11 +68,13 @@ router.post("/", async (request, response) => {
   try {
     const newPet = new Pet({name, appearance, user: userId})
     await newPet.save()
+    console.log(newPet);
     const user = await User.findById(userId)
     user.pets.currentPet = newPet._id 
     await user.save()
+    console.log("two", user);
 
-    res.status(201).json({ message: "Pet created successfully" });
+    response.status(201).json({ message: "Pet created successfully" });
   }  
   catch (error) {
     response.status(500).json({ error: "An error occurred when updating the pet." });
