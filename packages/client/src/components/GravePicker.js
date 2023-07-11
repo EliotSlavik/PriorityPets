@@ -1,11 +1,14 @@
 import React from "react";
 import "./GravePicker.css";
+import useAuth from "../hooks/useAuth";
+import usePet from "../hooks/usePet";
 
-function GravePicker() {
+function GravePicker({ selected, formData, setFormData, setSelectedPet }) {
+  const {pet} = usePet()
+console.log(pet.appearance)
   return (
     <div className="grave-modal-container">
-      <img className="modal-grave"  alt="grave" src="/accessories/gravemarker.png" />
-      <img className="modal-grave" alt="grave" src="/accessories/gravemarker.png" />
+      <img className={pet.healthLevel <= 0 ? "modal-grave" : "modal-grave-hide"}  alt="pet ghost" src={pet.appearance} />
     </div>
   );
 }

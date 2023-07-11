@@ -7,6 +7,8 @@ import NavBar from "../components/Navbar.js";
 import { motion } from "framer-motion";
 import useAuth from "../hooks/useAuth";
 import usePet from "../hooks/usePet";
+import { petContext } from "../contexts/petContext";
+import { toast } from "react-toastify";
 
 const imgs = [
   "/x2/Cat_Down@2x.png",
@@ -25,6 +27,7 @@ function PetPage() {
   const [isActivated, setIsActivated] = useState(false);
   const [showPetDiv, setShowPetDiv] = useState(false);
   const [showJumpButton, setShowJumpButton] = useState(false);
+  const [increaseHealth, setIncreaseHealth] = useState("")
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
   const { pet } = usePet();
@@ -32,11 +35,10 @@ function PetPage() {
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
-    healthLevel: 100,
     userId: auth.user._id,
   });
 
-  console.log(formData.name);
+  console.log(pet.appearance);
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -55,6 +57,25 @@ function PetPage() {
     setOpen(false);
   };
 
+  const petCreationComplete = () => {
+    if(pet.name !== "") {
+      setShowPetDiv(true)
+      setShowPetName(true)
+      setSelectedPet(pet.appearance)
+      setShowJumpButton(true)
+      console.log(selectedPet)
+    }
+  }
+
+console.log(showPetName)
+console.log(selectedPet)
+
+
+  const petNameNotEntered = () => {
+    if (formData.name === "") {
+      return toast("Please enter pet's name");
+    }
+  };
   const handlePetSelection = async (event) => {
     setShow(false);
     setShowPetDiv(true);
@@ -76,29 +97,38 @@ function PetPage() {
     setIsActivated(!isActivated);
   };
 
+  const increasePetHealth = () => {
+   console.log(pet)
+
+    
+  }
+
   return (
     <>
       <div className="main-background-div">
         <NavBar />
-        <h1 className={showPetName ? "pet-title-hide" : "pet-title"}>
+        <h1 className={petCreationComplete ? "pet-title-hide" : "pet-title"}>
           {" "}
           Welcome To Your Pet's Page
         </h1>
         <h1
-          className={showPetName ? "pet-title" : "pet-title-hide"}
-        >{`${formData.name}'s Forever Home`}</h1>
+          className={petCreationComplete ? "pet-title" : "pet-title-hide"}
+        >{`${pet.name}'s Forever Home`}</h1>
         {/* This button renders differently on the page when the health is greater than 0. */}
+        <div className={petCreationComplete ? "create-pet-div-hide" : "create-pet-div"}>
+          <Button
+            className={
+              pet.healthLevel <= 0
+                ? "button-card-hide"
+                : "button-card-indiv"
+            }
+            onClick={openModal}
+          >
+            Choose Your Pet
+          </Button>
+        </div>
         <Button
-          className={
-            formData.healthLevel <= 0 ? "button-card" : "button-card-indiv"
-          }
-          onClick={openModal}
-        >
-          Choose Your Pet
-        </Button>
-
-        <Button
-          className={showJumpButton ? "jump-button" : "jump-button-hide"}
+          className={petCreationComplete ? "jump-button" : "jump-button-hide"}
           onClick={handleButtonClick}
         >
           Wanna See Me Jump?
@@ -126,14 +156,17 @@ function PetPage() {
             imgs={imgs}
             handlePetSelection={handlePetSelection}
           />
-          <Button onClick={handlePetSelection} className="handle-pet-btn">
+          <Button
+            onClick={formData.name ? handlePetSelection : petNameNotEntered}
+            className="handle-pet-btn"
+          >
             Choose
           </Button>
         </Modal>
         {/* The cemetary button only renders when the health is 0 */}
         <Button
           className={
-            formData.healthLevel <= 0
+            pet.healthLevel <= 0
               ? "graveyard-button"
               : "graveyard-button-hide"
           }
@@ -156,8 +189,9 @@ function PetPage() {
             Revive Your Pet
           </Modal.Header>
           <GravePicker />
+          <Button onClick={increasePetHealth}>Restore</Button>
         </Modal>
-        <div className={showPetDiv ? "pet-dec-card" : "pet-dec-card-hide"}>
+        <div className={petCreationComplete ? "pet-dec-card" : "pet-dec-card-hide"}>
           <img
             className="foodBowl"
             alt="food bowl"
@@ -169,12 +203,14 @@ function PetPage() {
             alt="water bowl"
             src="/accessories/waterbowl.png"
           />
+          <div>
           <motion.img
             animate={{ x: value * 8 + "px" }}
             className={isActivated ? "petty-move" : "petty"}
             alt="pet"
-            src={selectedPet}
+            src={petCreationComplete ? pet.appearance : selectedPet}
           />
+          </div>
           <img
             className="petHouse"
             alt="pet house"
