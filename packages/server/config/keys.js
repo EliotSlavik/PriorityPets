@@ -12,7 +12,7 @@ export default {
     refreshTokenExp: process.env.REFRESH_TOKEN_TTL || "7d",
   },
   db: {
-    url: process.env.MONGO_URI || "mongodb+srv://someone:somepass@prioritypet.eqxedmq.mongodb.net/?retryWrites=true&w=majority",
+    url: process.env.MONGO_URI || "mongodb+srv://CliffordHunter:password1234@prioritypet.eqxedmq.mongodb.net/?retryWrites=true&w=majority",
   },
   constants: {
     email_regex:
