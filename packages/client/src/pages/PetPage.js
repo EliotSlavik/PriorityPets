@@ -35,11 +35,10 @@ function PetPage() {
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
-
     userId: auth.user._id,
   });
 
-  console.log(pet);
+  console.log(pet.appearance);
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -57,6 +56,21 @@ function PetPage() {
   const closeGraveModal = () => {
     setOpen(false);
   };
+
+  const petCreationComplete = () => {
+    if(pet.name !== "") {
+      setShowPetDiv(true)
+      setShowPetName(true)
+      setSelectedPet(pet.appearance)
+      setShowJumpButton(true)
+      console.log(selectedPet)
+    }
+  }
+
+console.log(showPetName)
+console.log(selectedPet)
+
+
   const petNameNotEntered = () => {
     if (formData.name === "") {
       return toast("Please enter pet's name");
@@ -93,15 +107,15 @@ function PetPage() {
     <>
       <div className="main-background-div">
         <NavBar />
-        <h1 className={showPetName ? "pet-title-hide" : "pet-title"}>
+        <h1 className={petCreationComplete ? "pet-title-hide" : "pet-title"}>
           {" "}
           Welcome To Your Pet's Page
         </h1>
         <h1
-          className={showPetName ? "pet-title" : "pet-title-hide"}
-        >{`${formData.name}'s Forever Home`}</h1>
+          className={petCreationComplete ? "pet-title" : "pet-title-hide"}
+        >{`${pet.name}'s Forever Home`}</h1>
         {/* This button renders differently on the page when the health is greater than 0. */}
-        <div className={showPetName ? "create-pet-div-hide" : "create-pet-div"}>
+        <div className={petCreationComplete ? "create-pet-div-hide" : "create-pet-div"}>
           <Button
             className={
               pet.healthLevel <= 0
@@ -114,7 +128,7 @@ function PetPage() {
           </Button>
         </div>
         <Button
-          className={showJumpButton ? "jump-button" : "jump-button-hide"}
+          className={petCreationComplete ? "jump-button" : "jump-button-hide"}
           onClick={handleButtonClick}
         >
           Wanna See Me Jump?
@@ -177,7 +191,7 @@ function PetPage() {
           <GravePicker />
           <Button onClick={increasePetHealth}>Restore</Button>
         </Modal>
-        <div className={showPetDiv ? "pet-dec-card" : "pet-dec-card-hide"}>
+        <div className={petCreationComplete ? "pet-dec-card" : "pet-dec-card-hide"}>
           <img
             className="foodBowl"
             alt="food bowl"
@@ -194,7 +208,7 @@ function PetPage() {
             animate={{ x: value * 8 + "px" }}
             className={isActivated ? "petty-move" : "petty"}
             alt="pet"
-            src={selectedPet}
+            src={petCreationComplete ? pet.appearance : selectedPet}
           />
           </div>
           <img
