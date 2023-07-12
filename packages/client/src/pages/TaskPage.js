@@ -9,8 +9,10 @@ function TaskPage() {
   return (
     <div className="mainTaskDiv" >
       <NavBar />
-    <h1 style={{ color: "white", fontWeight: "bold", fontSize: "60px" }}>{`${auth.user.username}'s Priorities `} </h1>
+    <h1 id="taskPageTitle"> {`${auth.user.username}'s Priorities `} </h1>
+    <div id = "taskSection">
       <TaskManagement userEmail={auth.user.email} />
+      </div>
     </div>
   );
 }

@@ -139,17 +139,20 @@ function HomePage({ handleLogin }) {
           height="200px"
         />
       </div>
+      <div id="homepageButtonSection">
       <Button
         className="button-33"
+        id="loginButton"
         variant="primary"
         onClick={handleOpenLoginModal}
       >
         Login
       </Button>
       <Login showModal={showLoginModal} handleCloseModal={handleCloseLoginModal} onLogin={handleLogin} onError={handleError} />
-      <Button className="button-33" variant="primary" onClick={handleOpenSignupModal}>
+      <Button className="button-33" id="signupButton" variant="primary" onClick={handleOpenSignupModal}>
         Signup
       </Button>
+      </div>
       <Signup
         showModal={showSignupModal}
         handleCloseModal={handleCloseSignupModal}

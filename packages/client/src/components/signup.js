@@ -30,10 +30,12 @@ const Signup = ({ showModal, handleCloseModal, onError }) => {
       onHide={handleCloseModal}
       style={{ backgroundColor: "transparent" }}
     >
-      <Modal.Header closeButton className="signup-header">
+      <Modal.Header closeButton className="signup-header" id="signupModalHeader">
         <Modal.Title>Signup (Please complete all fields)</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="sign-up-modal">
+      <Modal.Body 
+        id="signupModalBody"
+        className="sign-up-modal">
         <form onSubmit={handleSignup}>
           <input
             className="sign-up-input1"
