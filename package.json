@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -24,7 +25,7 @@
     "client": "npm run start --workspace=client",
     "server": "npm run start --workspace=server",
     "start": "concurrently --kill-others-on-fail \"npm run server\"  \"npm run client\"",
-    "build":"npm run build --workspace=client && npm run build --workspace=server"
+    "build": "npm run build --workspace=client && npm run build --workspace=server"
   },
   "eslintConfig": {
     "extends": [

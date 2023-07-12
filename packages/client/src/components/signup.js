@@ -67,7 +67,7 @@ const Signup = ({ showModal, handleCloseModal, onError }) => {
             value={data.confirmPassword}
             onChange={handleInputChange}
           />
-          <Button className="sign-up-button" type="submit">
+          <Button className="sign-up-button" type="submit" onClick={handleCloseModal}>
             Signup
           </Button>
         </form>

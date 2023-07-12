@@ -8,14 +8,17 @@ import "react-toastify/dist/ReactToastify.min.css";
 import ProtectedRoute from "./components/ProtectedRoute";
 import useAuth from "./hooks/useAuth";
 
+
 function App() {
   const { auth } = useAuth();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+ 
 
   const handleLogin = (email) => {
     setUserEmail(email);
     setIsLoggedIn(true);
+   
   };
 
   const handleLogout = () => {

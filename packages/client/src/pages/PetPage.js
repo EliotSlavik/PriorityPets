@@ -38,7 +38,10 @@ function PetPage() {
     userId: auth.user._id,
   });
 
-  console.log(pet.appearance);
+  console.log(pet);
+  console.log(auth)
+  console.log(petContext)
+
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -58,18 +61,11 @@ function PetPage() {
   };
 
   const petCreationComplete = () => {
-    if(pet.name !== "") {
-      setShowPetDiv(true)
-      setShowPetName(true)
-      setSelectedPet(pet.appearance)
-      setShowJumpButton(true)
-      console.log(selectedPet)
-    }
+     setShowPetName(true)
+     setSelectedPet(pet.appearance)
+      setShowPetDiv(false)
+      setShowJumpButton(false)
   }
-
-console.log(showPetName)
-console.log(selectedPet)
-
 
   const petNameNotEntered = () => {
     if (formData.name === "") {
@@ -103,6 +99,7 @@ console.log(selectedPet)
     
   }
 
+console.log(pet.appearance)
   return (
     <>
       <div className="main-background-div">
@@ -115,7 +112,7 @@ console.log(selectedPet)
           className={petCreationComplete ? "pet-title" : "pet-title-hide"}
         >{`${pet.name}'s Forever Home`}</h1>
         {/* This button renders differently on the page when the health is greater than 0. */}
-        <div className={petCreationComplete ? "create-pet-div-hide" : "create-pet-div"}>
+        <div className={`${showPetDiv ? "create-pet-div-hide" : "create-pet-div"} ${showJumpButton ? "create-pet-div-hide" : "create-pet-div" }`}>
           <Button
             className={
               pet.healthLevel <= 0
@@ -191,7 +188,7 @@ console.log(selectedPet)
           <GravePicker />
           <Button onClick={increasePetHealth}>Restore</Button>
         </Modal>
-        <div className={petCreationComplete ? "pet-dec-card" : "pet-dec-card-hide"}>
+        <div className={`${petCreationComplete ? "pet-dec-card" : "pet-dec-card-hide"}`}>
           <img
             className="foodBowl"
             alt="food bowl"
@@ -208,7 +205,7 @@ console.log(selectedPet)
             animate={{ x: value * 8 + "px" }}
             className={isActivated ? "petty-move" : "petty"}
             alt="pet"
-            src={petCreationComplete ? pet.appearance : selectedPet}
+            src={handlePetSelection ? pet.appearance : selectedPet}
           />
           </div>
           <img
