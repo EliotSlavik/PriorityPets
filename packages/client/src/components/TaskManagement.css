@@ -50,7 +50,9 @@ ol:hover .main {
 }
 
 .task {
-  max-width: 500px;
+  max-width: 530px;
+  width: 530px;
+  border: 4px solid white;
 }
 
 ol {
@@ -60,7 +62,8 @@ ol {
 }
 
 .modalButton {
-  background-image: linear-gradient(#0a4979, #0462b9);
+  margin-left: 9%;
+  background-color: rgb(24,147,255);
   border: 1px solid #31404b;
   border-radius: 4px;
   box-sizing: border-box;
@@ -80,7 +83,6 @@ ol {
   overflow: visible;
   padding: 4px 15px;
   text-align: center;
- 
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -88,7 +90,7 @@ ol {
 }
 
 .modalButton:hover {
-  background-image: linear-gradient(#2551d3, #034c87);
+  background-image: #1893ff;
   border-color: #1482d0;
   text-decoration: none;
 }
@@ -107,15 +109,23 @@ margin-left: 30px;
 font-size: larger;
 border-radius: 8px;
 padding: 5px;
+border: 2px solid white;
 }
+
 .edit-button:hover {
   background-color: rgb(158, 153, 153);
   transition: ease-in-out;
 }
 
+#taskDeleteButton {
+
+  border: 2px solid white;
+}
+
 .datePicker {
   max-width: 300px;
   margin-left: 145px;
+  border: 2px solid white;
 }
 
 .dueDateSpan {
@@ -132,8 +142,6 @@ padding: 5px;
 }
 
 .div-card2 {
-  border: 1px white solid;
-  border-radius: 15px;
   max-width: 600px;
   max-height: 180vh;
   min-height: 500px;
@@ -143,4 +151,18 @@ padding: 5px;
   padding: 10px;
 }
 
+#modalBody{
+  background-color: rgb(241, 154, 79);
+}
 
+#modalHeader{
+  background-color: rgb(241, 154, 79);
+}
+
+#editTaskModalHeader {
+  background-color: rgb(241, 154, 79);
+}
+
+#TaskModalEdit {
+  background-color: rgb(241, 154, 79);
+}

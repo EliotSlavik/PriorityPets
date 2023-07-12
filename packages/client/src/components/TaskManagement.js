@@ -8,7 +8,7 @@ import "./TaskManagement.css";
 import axios from "../util/axiosConfig";
 import useAuth from "../hooks/useAuth";
 
-const bgColor = ["khaki", "orange", "orangered"];
+const bgColor = ["lightblue", "lightgray", "orangered"];
 
 function TaskManagement({ userEmail }) {
   const { auth } = useAuth();
@@ -52,7 +52,7 @@ function TaskManagement({ userEmail }) {
       dueDate,
       reminder,
       completed: false,
-      userEmail, // Add userEmail to the new task
+      userEmail,
     };
 
     // Put axios logic here
@@ -173,11 +173,11 @@ function TaskManagement({ userEmail }) {
           Add Task
         </Button>
         <Modal className="modal" show={show} onHide={closeModal}>
-          <Modal.Header closeButton style={{ marginBottom: "-60px", backgroundColor: "green", fontSize: "30px" }}></Modal.Header>
+          <Modal.Header id="modalHeader" closeButton style={{ marginBottom: "-60px", fontSize: "30px" }}></Modal.Header>
           <div
             className="container mt-5"
+            id="modalBody"
             style={{
-              backgroundColor: "green",
               borderRadius: "20px",
               marginBottom: "-580px",
             }}
@@ -258,11 +258,10 @@ function TaskManagement({ userEmail }) {
                       show={showEditModal}
                       onHide={() => setShowEditModal(false)}
                     >
-                      <Modal.Header closeButton style={{ backgroundColor: "green", fontSize: "30px", marginBottom: "-70px" }}></Modal.Header>
-                      <div
+                      <Modal.Header id="editTaskModalHeader" closeButton style={{ fontSize: "30px", marginBottom: "-70px" }}></Modal.Header>
+                      <div id="TaskModalEdit"
                         className="container mt-5"
                         style={{
-                          backgroundColor: "green",
                           borderRadius: "20px",
                           marginBottom: "-650px",
                         }}
@@ -295,6 +294,7 @@ function TaskManagement({ userEmail }) {
 
                     <Button
                       className="btn btn-danger deleteButtonTask"
+                      id="taskDeleteButton"
                       style={{ marginLeft: "30px", borderRadius: "10px", fontSize: "larger", marginBottom: "5px" }}
                       onClick={() => handleDeleteTask(index, task._id)}
                     >
