@@ -178,6 +178,8 @@ body {
   padding: 10px;
 }
 
+
+
 @keyframes jiggle {
   0% {
     transform: rotate(0deg);
@@ -201,6 +203,110 @@ body {
   margin-left: 43%;
 }
 
+@media (max-width: 1189px) {
+  .para-home-page {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(24,147,255) solid;
+    border-right: 20px rgb(24,147,255) solid;
+    background-color: rgb(241, 154, 79);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 230px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .para-home-page {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(24,147,255) solid;
+    border-right: 20px rgb(24,147,255) solid;
+    background-color: rgb(241, 154, 79);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 180px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .para-home-page {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(24,147,255) solid;
+    border-right: 20px rgb(24,147,255) solid;
+    background-color: rgb(241, 154, 79);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 110px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 850px) {
+  .para-home-page {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(24,147,255) solid;
+    border-right: 20px rgb(24,147,255) solid;
+    background-color: rgb(241, 154, 79);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 50px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 780px) {
+  .para-home-page {
+    position: absolute;
+    font-size: larger;
+    border-left: 20px rgb(24,147,255) solid;
+    border-right: 20px rgb(24,147,255) solid;
+    background-color: rgb(241, 154, 79);
+    color: white;
+    border-radius: 15px;
+    bottom: -400px;
+    left: 20px;
+    max-width: 750px;
+    max-height: 830px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+}
 @media (max-width: 600px) {
   .cat-image {
     top: -95%;
@@ -213,6 +319,7 @@ body {
   .newUser {
     margin-left: 20%;
   }
+
 }
 
 @media (max-width: 480px) {
