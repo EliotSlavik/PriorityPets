@@ -11,7 +11,7 @@ router.get("/:id", async (request, response) => {
     const pet = await Pet.findById(id).exec();
 
     if (pet) {
-      response.json(pet);
+      response.json({ currentPet: pet });
     } else {
       response.status(404).json({ error: "Pet not found." });
     }

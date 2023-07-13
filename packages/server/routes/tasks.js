@@ -89,4 +89,32 @@ router.put("/complete", async (request, response) => {
   }
 });
 
+router.delete("/delete/:taskId/:userId", async (request, response) => {
+  try {
+    const { taskId, userId } = request.params;
+
+    // Find the user by ID
+    const user = await User.findByIdAndUpdate(userId, { $pull: { tasks: taskId } }, { new: true });
+
+    if (!user) {
+      return response.status(404).json({ error: "User not found" });
+    }
+
+    // Find the task by ID
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return response.status(404).json({ error: "Task not found" });
+    }
+
+    // Delete the task from the database
+    await Task.findByIdAndDelete(taskId);
+
+    response.json(user.tasks);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

@@ -32,7 +32,6 @@ function TaskManagement({ userEmail }) {
   const [editReminder, setEditReminder] = useState(new Date());
   const [showEditModal, setShowEditModal] = useState(false);
 
-  
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -80,6 +79,9 @@ function TaskManagement({ userEmail }) {
     const updatedTasks = [...tasks];
     updatedTasks.splice(index, 1);
     setTasks(updatedTasks);
+    axios.delete(`http://localhost:3001/api/tasks/delete/${_id}/${auth.user._id}`).catch((error) => {
+      console.log(error);
+    });
   };
 
   const handleCompleteTask = (index, _id) => {
