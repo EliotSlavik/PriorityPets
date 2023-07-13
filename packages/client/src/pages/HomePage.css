@@ -1,6 +1,7 @@
 body {
   height: 100vh;
   width: 100vw;
+  padding-top: 80px;
   background-color: rgb(157, 246, 147);
   display: flex;
   flex-direction: column;
