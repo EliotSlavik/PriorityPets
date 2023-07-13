@@ -10,14 +10,7 @@ import usePet from "../hooks/usePet";
 import { petContext } from "../contexts/petContext";
 import { toast } from "react-toastify";
 
-const imgs = [
-  "/x2/Cat_Down@2x.png",
-  "/x2/Chick_Down@2x.png",
-  "/x2/Fox_Down@2x.png",
-  "/x2/Mouse_Down@2x.png",
-  "/x2/Pig_Down@2x.png",
-  "/x2/Rabbit_Down@2x.png",
-];
+const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
 function PetPage() {
   const [show, setShow] = useState(false);
@@ -40,11 +33,12 @@ function PetPage() {
   });
 
   console.log(pet);
-  console.log(auth.isAuthenticated);
-  console.log(auth);
+  //console.log(auth.user.currentPet);
+  //console.log(auth.user._id);
 
   useEffect(() => {
-    if (auth.isAuthenticated) {
+    if (!(pet.name === undefined)) {
+      //console.log("hello");
       showPetDivLogin();
     }
   }, [auth.loggedIn]);
@@ -76,11 +70,7 @@ function PetPage() {
 
   const showPetDivLogin = () => {
     const authPetName = auth.user.pets.currentPet.name;
-    if (
-      pet.name === authPetName &&
-      pet.name !== undefined &&
-      authPetName !== undefined
-    ) {
+    if (pet.name === authPetName && pet.name !== undefined && authPetName !== undefined && pet.healthLevel !== 0) {
       setShowPetDiv(true);
       setShowJumpButton(true);
       setShowChooseButton(false);
@@ -94,38 +84,26 @@ function PetPage() {
   };
   const handlePetSelection = async (event) => {
     setShow(false);
-    setShowChooseButton(false);
-    setShowPetDiv(true);
-    setShowJumpButton(true);
-    setShowPetName(true);
-    setFormData({
-      name: formData.name,
-      appearance: formData.appearance,
-      userId: auth.user._id,
-    });
-    if (formData.name !== "") {
-      setShow(false);
-      createPet(formData.name, formData.appearance, formData.userId);
-    }
+
+    createPet(formData);
   };
 
   const handleButtonClick = () => {
     handlePetSelection();
-    setIsActivated(!isActivated);
   };
 
   const increasePetHealth = () => {
     console.log(pet);
   };
 
-  console.log(pet.appearance);
-  console.log(showChooseButton);
-  console.log(showPetDiv);
+  // console.log(pet.appearance);
+  // console.log(showChooseButton);
+  // console.log(showPetDiv);
   return (
     <>
       <div className="main-background-div">
         <NavBar />
-        {auth.isAuthenticated ? (
+        {pet.name ? (
           <>
             <h1 className="pet-title-hide">Welcome To Your Pet's Page</h1>
             <h1 className="pet-title">{`${pet.name}'s Forever Home`}</h1>
@@ -136,41 +114,24 @@ function PetPage() {
 
         {/* This button renders differently on the page when the health is greater than 0. */}
         {auth.isAuthenticated ? (
-          <div
-            className={
-              showChooseButton ? "create-pet-div-hide" : "create-pet-div"
-            }
-          >
+          <div className={showChooseButton ? "create-pet-div-hide" : "create-pet-div"}>
             <Button className="button-card-hide" onClick={openModal}>
               Choose Your Pet
             </Button>
           </div>
         ) : (
-          <div
-            className={
-              showChooseButton ? "create-pet-div-hide" : "create-pet-div"
-            }
-          >
-            <Button
-              className={
-                showChooseButton ? "button-card-hide" : "button-card-indiv"
-              }
-              onClick={openModal}
-            >
+          <div className={showChooseButton ? "create-pet-div-hide" : "create-pet-div"}>
+            <Button className={showChooseButton ? "button-card-hide" : "button-card-indiv"} onClick={openModal}>
               Choose Your Pet
             </Button>
           </div>
         )}
-        
-        {auth.isAuthenticated ? (
-          <Button className="jump-button" onClick={handleButtonClick}>
+        {pet.name ? (
+          <Button className="jump-button" onClick={handleJumpButton}>
             Wanna See Me Jump?
           </Button>
         ) : (
-          <Button
-            className={showJumpButton ? "jump-button-hide" : "jump-button"}
-            onClick={handleButtonClick}
-          >
+          <Button className={showJumpButton ? "jump-button-hide" : "jump-button"} onClick={handleButtonClick}>
             Wanna See Me Jump?
           </Button>
         )}
@@ -188,29 +149,14 @@ function PetPage() {
           >
             Welcome To The Pet Store
           </Modal.Header>
-          <PetPicker
-            selected={selectedPet}
-            setSelectedPet={setSelectedPet}
-            formData={formData}
-            setFormData={setFormData}
-            imgs={imgs}
-            handlePetSelection={handlePetSelection}
-          />
+          <PetPicker selected={selectedPet} setSelectedPet={setSelectedPet} formData={formData} setFormData={setFormData} imgs={imgs} handlePetSelection={handlePetSelection} />
 
-          <Button
-            onClick={formData.name ? handlePetSelection : petNameNotEntered}
-            className="handle-pet-btn"
-          >
+          <Button onClick={formData.name ? handlePetSelection : petNameNotEntered} className="handle-pet-btn">
             Choose
           </Button>
         </Modal>
         {/* The cemetary button only renders when the health is 0 */}
-        <Button
-          className={
-            pet.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"
-          }
-          onClick={openGraveModal}
-        >
+        <Button className={pet.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"} onClick={openGraveModal}>
           Visit Pet Cemetary
         </Button>
         <Modal show={open} className="grave-modal">
@@ -232,57 +178,23 @@ function PetPage() {
         </Modal>
         {auth.isAuthenticated ? (
           <div className="pet-dec-card">
-            <img
-              className="foodBowl"
-              alt="food bowl"
-              src="/accessories/foodbowl.png"
-            />
+            <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
 
-            <img
-              className="waterBowl"
-              alt="water bowl"
-              src="/accessories/waterbowl.png"
-            />
+            <img className="waterBowl" alt="water bowl" src="/accessories/waterbowl.png" />
 
-            <motion.img
-              animate={{ x: value * 8 + "px" }}
-              className={isActivated ? "petty-move" : "petty"}
-              alt="pet"
-              src={handlePetSelection ? pet.appearance : selectedPet}
-            />
+            <motion.img animate={{ x: value * 8 + "px" }} className={isActivated ? "petty-move" : "petty"} alt="pet" src={handlePetSelection ? pet.appearance : selectedPet} />
 
-            <img
-              className="petHouse"
-              alt="pet house"
-              src="/accessories/pethouse.png"
-            />
+            <img className="petHouse" alt="pet house" src="/accessories/pethouse.png" />
           </div>
         ) : (
           <div className="pet-dec-card-hide">
-            <img
-              className="foodBowl"
-              alt="food bowl"
-              src="/accessories/foodbowl.png"
-            />
+            <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
 
-            <img
-              className="waterBowl"
-              alt="water bowl"
-              src="/accessories/waterbowl.png"
-            />
+            <img className="waterBowl" alt="water bowl" src="/accessories/waterbowl.png" />
 
-            <motion.img
-              animate={{ x: value * 8 + "px" }}
-              className={isActivated ? "petty-move" : "petty"}
-              alt="pet"
-              src={handlePetSelection ? pet.appearance : selectedPet}
-            />
+            <motion.img animate={{ x: value * 8 + "px" }} className={isActivated ? "petty-move" : "petty"} alt="pet" src={handlePetSelection ? pet.appearance : selectedPet} />
 
-            <img
-              className="petHouse"
-              alt="pet house"
-              src="/accessories/pethouse.png"
-            />
+            <img className="petHouse" alt="pet house" src="/accessories/pethouse.png" />
           </div>
         )}
         <div className="graveyard-holder"></div>

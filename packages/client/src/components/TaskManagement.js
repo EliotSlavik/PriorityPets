@@ -32,7 +32,6 @@ function TaskManagement({ userEmail }) {
   const [editReminder, setEditReminder] = useState(new Date());
   const [showEditModal, setShowEditModal] = useState(false);
 
-  
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -43,7 +42,6 @@ function TaskManagement({ userEmail }) {
   };
 
   const handleAddTask = () => {
-    console.log(userEmail);
     const newTask = {
       name,
       description,
@@ -59,7 +57,6 @@ function TaskManagement({ userEmail }) {
     axios
       .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
-        console.log(response.data);
         setTasks([...tasks, newTask]);
       })
       .catch((error) => {
@@ -80,6 +77,9 @@ function TaskManagement({ userEmail }) {
     const updatedTasks = [...tasks];
     updatedTasks.splice(index, 1);
     setTasks(updatedTasks);
+    axios.delete(`http://localhost:3001/api/tasks/delete/${_id}/${auth.user._id}`).catch((error) => {
+      console.log(error);
+    });
   };
 
   const handleCompleteTask = (index, _id) => {
@@ -106,10 +106,15 @@ function TaskManagement({ userEmail }) {
       priority: editPriority,
       dueDate: editDueDate,
       reminder: editReminder,
-      userEmail, // Add userEmail to the edited task
+      userEmail,
     };
     updatedTasks[editIndex] = editedTask;
     setTasks(updatedTasks);
+
+    axios.put(`http://localhost:3001/api/tasks/edit`, { editedTask, taskId: _id }).catch((error) => {
+      console.log(error);
+    });
+
     setEditIndex(null);
     setShowEditModal(false);
     setEditName("");
@@ -207,7 +212,6 @@ function TaskManagement({ userEmail }) {
             </div>
           </div>
         </Modal>
-        {console.log(tasks)}
         {tasks.map((task, index) => (
           <div key={index} className="listDiv">
             <ol>
@@ -259,7 +263,8 @@ function TaskManagement({ userEmail }) {
                       onHide={() => setShowEditModal(false)}
                     >
                       <Modal.Header id="editTaskModalHeader" closeButton style={{ fontSize: "30px", marginBottom: "-70px" }}></Modal.Header>
-                      <div id="TaskModalEdit"
+                      <div
+                        id="TaskModalEdit"
                         className="container mt-5"
                         style={{
                           borderRadius: "20px",

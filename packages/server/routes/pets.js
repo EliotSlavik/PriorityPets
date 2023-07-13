@@ -6,12 +6,13 @@ const router = express.Router();
 
 router.get("/:id", async (request, response) => {
   const id = request.params.id;
+  console.log(id);
 
   try {
     const pet = await Pet.findById(id).exec();
 
     if (pet) {
-      response.json(pet);
+      response.json({ currentPet: pet });
     } else {
       response.status(404).json({ error: "Pet not found." });
     }
@@ -44,7 +45,7 @@ router.post("/:id", async (request, response) => {
 });
 
 router.post("/heal/:id", async (request, response) => {
-  const id = request.params.id;
+  const { id } = request.params;
 
   try {
     const pet = await Pet.findById(id).exec();
@@ -73,6 +74,34 @@ router.post("/", async (request, response) => {
     response.status(201).json(newPet);
   } catch (error) {
     response.status(500).json({ error: "An error occurred when updating the pet." });
+  }
+});
+
+router.put("/feed", async (req, res) => {
+  const { userId, petId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    const pet = await Pet.findById(petId);
+
+    if (!user || !pet) {
+      return res.status(404).json({ error: "User or pet not found" });
+    }
+
+    if (user.points >= 1) {
+      pet.healthLevel = Math.min(pet.healthLevel + 10, 100);
+      await pet.save();
+
+      user.points -= 1;
+      await user.save();
+
+      return res.json({ message: "Successfully fed the pet" });
+    } else {
+      return res.status(403).json({ error: "Insufficient points" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 

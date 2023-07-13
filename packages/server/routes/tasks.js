@@ -47,6 +47,7 @@ router.post("/", async (request, response) => {
 
 router.put("/complete", async (request, response) => {
   const { userId, taskId } = request.body;
+
   try {
     const task = await Task.findById(taskId);
     const user = await User.findById(userId);
@@ -82,6 +83,57 @@ router.put("/complete", async (request, response) => {
         await user.save();
       }
     }
+
+    response.json(task);
+  } catch (error) {
+    response.status(500).json({ error: "An error occurred when completing the task." });
+  }
+});
+
+router.delete("/delete/:taskId/:userId", async (request, response) => {
+  try {
+    const { taskId, userId } = request.params;
+
+    // Find the user by ID
+    const user = await User.findByIdAndUpdate(userId, { $pull: { tasks: taskId } }, { new: true });
+
+    if (!user) {
+      return response.status(404).json({ error: "User not found" });
+    }
+
+    // Find the task by ID
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return response.status(404).json({ error: "Task not found" });
+    }
+
+    // Delete the task from the database
+    await Task.findByIdAndDelete(taskId);
+
+    response.json(user.tasks);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: error.message });
+  }
+});
+
+router.put("/edit", async (request, response) => {
+  const { editedTask, taskId } = request.body;
+  try {
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return response.status(404).json({ error: "Task not found." });
+    }
+
+    task.name = editedTask.name;
+    task.description = editedTask.description;
+    task.priority = editedTask.priority;
+    task.dueDate = editedTask.dueDate;
+    task.reminder = editedTask.reminder;
+
+    await task.save();
 
     response.json(task);
   } catch (error) {

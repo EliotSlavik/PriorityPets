@@ -3,14 +3,7 @@ import "./PetPicker.css";
 import axios from "../util/axiosConfig";
 import { petContext } from "../contexts/petContext";
 
-const imgs = [
-  "/x2/Cat_Down@2x.png",
-  "/x2/Chick_Down@2x.png",
-  "/x2/Fox_Down@2x.png",
-  "/x2/Mouse_Down@2x.png",
-  "/x2/Pig_Down@2x.png",
-  "/x2/Rabbit_Down@2x.png",
-];
+const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
 const PetPicker = ({ selected, formData, setFormData, setSelectedPet }) => {
   const handlePetSelection = (pet) => {
@@ -19,7 +12,6 @@ const PetPicker = ({ selected, formData, setFormData, setSelectedPet }) => {
   };
 
   const handleNameChange = (e) => {
-    // console.log(e.target.value);
     let name = e.target.value;
     setFormData({ ...formData, name: name });
   };
@@ -28,14 +20,7 @@ const PetPicker = ({ selected, formData, setFormData, setSelectedPet }) => {
     <div className="pet-container">
       <div className="pet-card">
         {imgs.map((pet) => (
-          <img
-            id="image"
-            className={pet === selected ? "selected" : ""}
-            key={pet}
-            src={pet}
-            alt="pet"
-            onClick={() => handlePetSelection(pet)}
-          />
+          <img id="image" className={pet === selected ? "selected" : ""} key={pet} src={pet} alt="pet" onClick={() => handlePetSelection(pet)} />
         ))}
       </div>
       <div>

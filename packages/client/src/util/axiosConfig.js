@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3001/api/",
+  baseURL: process.env.REACT_APP_NODE_ENV === "development" ? process.env.REACT_APP_API_DOMAIN : process.env.REACT_APP_API_DOMAIN,
+  withCredentials: true,
 });
 
 export const setAuthHeaders = (token) => {
