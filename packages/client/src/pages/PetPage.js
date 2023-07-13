@@ -1,4 +1,4 @@
-import React, { useState, onEffect } from "react";
+import React, { useState, onEffect, useEffect } from "react";
 import PetPicker from "../components/PetPicker";
 import "./PetPage.css";
 import { Modal, Button } from "react-bootstrap";
@@ -40,7 +40,14 @@ function PetPage() {
   });
 
   console.log(pet);
+  console.log(auth.isAuthenticated);
   console.log(auth);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      showPetDivLogin();
+    }
+  }, [auth.loggedIn]);
 
   const openModal = (e) => {
     e.preventDefault();
@@ -76,6 +83,7 @@ function PetPage() {
     ) {
       setShowPetDiv(true);
       setShowJumpButton(true);
+      setShowChooseButton(false);
     }
   };
 
@@ -111,39 +119,61 @@ function PetPage() {
   };
 
   console.log(pet.appearance);
+  console.log(showChooseButton);
+  console.log(showPetDiv);
   return (
     <>
       <div className="main-background-div">
         <NavBar />
-        <h1 className={petCreationComplete ? "pet-title-hide" : "pet-title"}>
-          Welcome To Your Pet's Page
-        </h1>
-        <h1
-          className={petCreationComplete ? "pet-title" : "pet-title-hide"}
-        >{`${pet.name}'s Forever Home`}</h1>
+        {auth.isAuthenticated ? (
+          <>
+            <h1 className="pet-title-hide">Welcome To Your Pet's Page</h1>
+            <h1 className="pet-title">{`${pet.name}'s Forever Home`}</h1>
+          </>
+        ) : (
+          <h1 className="pet-title">Welcome To Your Pet's Page</h1>
+        )}
+
         {/* This button renders differently on the page when the health is greater than 0. */}
-        <div
-          className={
-            showChooseButton ? "create-pet-div-hide" : "create-pet-div"
-          }
-        >
-          <Button
+        {auth.isAuthenticated ? (
+          <div
             className={
-              pet.healthLevel <= 0 ? "button-card-hide" : "button-card-indiv"
+              showChooseButton ? "create-pet-div-hide" : "create-pet-div"
             }
-            onClick={openModal}
           >
-            Choose Your Pet
+            <Button className="button-card-hide" onClick={openModal}>
+              Choose Your Pet
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={
+              showChooseButton ? "create-pet-div-hide" : "create-pet-div"
+            }
+          >
+            <Button
+              className={
+                showChooseButton ? "button-card-hide" : "button-card-indiv"
+              }
+              onClick={openModal}
+            >
+              Choose Your Pet
+            </Button>
+          </div>
+        )}
+        
+        {auth.isAuthenticated ? (
+          <Button className="jump-button" onClick={handleButtonClick}>
+            Wanna See Me Jump?
           </Button>
-        </div>
-
-        <Button
-          className={showJumpButton ? "jump-button" : "jump-button-hide"}
-          onClick={handleButtonClick}
-        >
-          Wanna See Me Jump?
-        </Button>
-
+        ) : (
+          <Button
+            className={showJumpButton ? "jump-button-hide" : "jump-button"}
+            onClick={handleButtonClick}
+          >
+            Wanna See Me Jump?
+          </Button>
+        )}
         <Modal show={show} className="pet-modal">
           <Modal.Header
             closeButton
@@ -166,6 +196,7 @@ function PetPage() {
             imgs={imgs}
             handlePetSelection={handlePetSelection}
           />
+
           <Button
             onClick={formData.name ? handlePetSelection : petNameNotEntered}
             className="handle-pet-btn"
@@ -199,32 +230,61 @@ function PetPage() {
           <GravePicker />
           <Button onClick={increasePetHealth}>Restore</Button>
         </Modal>
-        <div className={showPetDiv ? "pet-dec-card" : "pet-dec-card-hide"}>
-          <img
-            className="foodBowl"
-            alt="food bowl"
-            src="/accessories/foodbowl.png"
-          />
+        {auth.isAuthenticated ? (
+          <div className="pet-dec-card">
+            <img
+              className="foodBowl"
+              alt="food bowl"
+              src="/accessories/foodbowl.png"
+            />
 
-          <img
-            className="waterBowl"
-            alt="water bowl"
-            src="/accessories/waterbowl.png"
-          />
-          <div>
+            <img
+              className="waterBowl"
+              alt="water bowl"
+              src="/accessories/waterbowl.png"
+            />
+
             <motion.img
               animate={{ x: value * 8 + "px" }}
               className={isActivated ? "petty-move" : "petty"}
               alt="pet"
               src={handlePetSelection ? pet.appearance : selectedPet}
             />
+
+            <img
+              className="petHouse"
+              alt="pet house"
+              src="/accessories/pethouse.png"
+            />
           </div>
-          <img
-            className="petHouse"
-            alt="pet house"
-            src="/accessories/pethouse.png"
-          />
-        </div>
+        ) : (
+          <div className="pet-dec-card-hide">
+            <img
+              className="foodBowl"
+              alt="food bowl"
+              src="/accessories/foodbowl.png"
+            />
+
+            <img
+              className="waterBowl"
+              alt="water bowl"
+              src="/accessories/waterbowl.png"
+            />
+
+            <motion.img
+              animate={{ x: value * 8 + "px" }}
+              className={isActivated ? "petty-move" : "petty"}
+              alt="pet"
+              src={handlePetSelection ? pet.appearance : selectedPet}
+            />
+
+            <img
+              className="petHouse"
+              alt="pet house"
+              src="/accessories/pethouse.png"
+            />
+          </div>
+        )}
         <div className="graveyard-holder"></div>
       </div>
     </>
