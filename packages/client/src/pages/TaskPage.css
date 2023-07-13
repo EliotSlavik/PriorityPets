@@ -11,7 +11,7 @@
     border-radius: 1rem;
     background-color: rgb(248, 248, 127);
     margin-left: 0.8%;
-    max-width: 80%;
+    width: 50%;
 }
     
 #taskPageTitle { 

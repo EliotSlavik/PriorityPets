@@ -99,9 +99,12 @@ function PetPage() {
     createPet(formData);
   };
 
+  const handleJumpButton = () => {
+    setIsActivated(!isActivated);
+  }
   const handleButtonClick = () => {
     handlePetSelection();
-    setIsActivated(!isActivated);
+  
   };
 
   const increasePetHealth = () => {
@@ -136,7 +139,7 @@ function PetPage() {
           </>
         )}
         {pet.name ? (
-          <Button className="jump-button" onClick={handleButtonClick}>
+          <Button className="jump-button" onClick={handleJumpButton}>
             Wanna See Me Jump?
           </Button>
         ) : (
