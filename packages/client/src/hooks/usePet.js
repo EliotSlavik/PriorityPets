@@ -10,16 +10,14 @@ const usePet = () => {
 
   const getPet = async (onError) => {
     if (auth.user.pets.currentPet !== undefined || auth.user.pets.currentPet !== []) {
-      setPet(auth.pets.currentpet);
       api
-        .get(`/pet/${auth.pets.currentpet}`)
+        .get(`/pet/${auth.user.pets.currentPet._id}`)
         .then((response) => {
           const { currentPet } = response.data;
-          //setPet();
+          setPet(currentPet);
         })
         .catch((error) => {
-          // console.log(error);
-          onError(error);
+          console.log(error);
         });
     }
   };
