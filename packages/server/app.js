@@ -14,12 +14,7 @@ mongoose
   .catch((err) => console.error(err));
 
 const app = express();
-// added to fix CORS errors
-const corsConfig = {
-  credentials: true,
-  origin: true,
-};
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(express.json());
 app.use(keys.app.apiUrl, router);
 // add the following
