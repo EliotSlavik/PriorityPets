@@ -9,7 +9,7 @@ import useAuth from "../hooks/useAuth";
 import usePet from "../hooks/usePet";
 import { petContext } from "../contexts/petContext";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios from "../util/axiosConfig";
 
 const imgs = [
   "/x2/Cat_Down@2x.png",
@@ -39,6 +39,7 @@ function PetPage() {
     appearance: "",
     userId: auth.user._id,
   });
+
 
   console.log(pet);
   console.log(auth.user.currentPet);
@@ -104,22 +105,20 @@ function PetPage() {
       return toast("Please enter pet's name");
     }
   };
+
   const handlePetSelection = async (event) => {
+
     setShow(false);
-    setShowChooseButton(false);
-    setShowPetDiv(true);
-    setShowJumpButton(true);
-    setShowPetName(true);
-    setFormData({
-      name: formData.name,
-      appearance: formData.appearance,
-      userId: auth.user._id,
-    });
-    if (formData.name !== "") {
-      setShow(false);
-      createPet(formData.name, formData.appearance, formData.userId);
+
+    try {
+      const response = await axios.post("pets/", formData);
+      console.log("Updated pet:", response.data);
+      setPet(response.data.pet);
+    } catch (error) {
+      console.log("Error occurred while updating the pet:", error);
     }
   };
+
 
   const handleButtonClick = () => {
     handlePetSelection();
