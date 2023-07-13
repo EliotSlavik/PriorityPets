@@ -9,7 +9,6 @@ import useAuth from "../hooks/useAuth";
 import usePet from "../hooks/usePet";
 import { petContext } from "../contexts/petContext";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 const imgs = [
   "/x2/Cat_Down@2x.png",
@@ -32,7 +31,7 @@ function PetPage() {
   const [increaseHealth, setIncreaseHealth] = useState("");
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
-  const { pet, setPet } = usePet();
+  const { pet } = usePet();
   const { createPet } = usePet();
   const [formData, setFormData] = useState({
     name: "",
@@ -41,21 +40,14 @@ function PetPage() {
   });
 
   console.log(pet);
-  console.log(auth.user.currentPet);
-  console.log(auth.user._id);
+  console.log(auth.isAuthenticated);
+  console.log(auth);
 
   useEffect(() => {
-    if (!(pet.name === undefined)) {
-      console.log("hello");
+    if (auth.isAuthenticated) {
       showPetDivLogin();
     }
-  }, [pet.name]);
-
-  useEffect(() => {
-    if (pet.healthLevel === 0) {
-      petHealthLevelZero();
-    }
-  }, [pet.healthLevel]);
+  }, [auth.loggedIn]);
 
   const openModal = (e) => {
     e.preventDefault();
@@ -75,12 +67,11 @@ function PetPage() {
     setOpen(false);
   };
 
-  const petHealthLevelZero = () => {
-    setShowPetName(false);
+  const petCreationComplete = () => {
+    setShowPetName(true);
     setSelectedPet(pet.appearance);
     setShowPetDiv(false);
     setShowJumpButton(false);
-    setShowChooseButton(false);
   };
 
   const showPetDivLogin = () => {
@@ -88,14 +79,11 @@ function PetPage() {
     if (
       pet.name === authPetName &&
       pet.name !== undefined &&
-      authPetName !== undefined &&
-      pet.healthLevel !== 0
+      authPetName !== undefined
     ) {
       setShowPetDiv(true);
       setShowJumpButton(true);
       setShowChooseButton(false);
-    } else {
-      return;
     }
   };
 
@@ -137,33 +125,52 @@ function PetPage() {
     <>
       <div className="main-background-div">
         <NavBar />
-
-        {pet.name ? (
+        {auth.isAuthenticated ? (
           <>
             <h1 className="pet-title-hide">Welcome To Your Pet's Page</h1>
             <h1 className="pet-title">{`${pet.name}'s Forever Home`}</h1>
+          </>
+        ) : (
+          <h1 className="pet-title">Welcome To Your Pet's Page</h1>
+        )}
 
+        {/* This button renders differently on the page when the health is greater than 0. */}
+        {auth.isAuthenticated ? (
+          <div
+            className={
+              showChooseButton ? "create-pet-div-hide" : "create-pet-div"
+            }
+          >
             <Button className="button-card-hide" onClick={openModal}>
               Choose Your Pet
             </Button>
-          </>
+          </div>
         ) : (
-          <>
-            <h1 className="pet-title">Welcome To Your Pet's Page</h1>
-
-            {/* This button renders differently on the page when the health is greater than 0. */}
-
-            <Button className="button-card" onClick={openModal}>
+          <div
+            className={
+              showChooseButton ? "create-pet-div-hide" : "create-pet-div"
+            }
+          >
+            <Button
+              className={
+                showChooseButton ? "button-card-hide" : "button-card-indiv"
+              }
+              onClick={openModal}
+            >
               Choose Your Pet
             </Button>
-          </>
+          </div>
         )}
-        {pet.name ? (
+        
+        {auth.isAuthenticated ? (
           <Button className="jump-button" onClick={handleButtonClick}>
             Wanna See Me Jump?
           </Button>
         ) : (
-          <Button className="jump-button-hide" onClick={handleButtonClick}>
+          <Button
+            className={showJumpButton ? "jump-button-hide" : "jump-button"}
+            onClick={handleButtonClick}
+          >
             Wanna See Me Jump?
           </Button>
         )}
@@ -218,13 +225,12 @@ function PetPage() {
               fontWeight: "bolder",
             }}
           >
-            
             Revive Your Pet
           </Modal.Header>
           <GravePicker />
           <Button onClick={increasePetHealth}>Restore</Button>
         </Modal>
-        {pet.name ? (
+        {auth.isAuthenticated ? (
           <div className="pet-dec-card">
             <img
               className="foodBowl"

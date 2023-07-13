@@ -158,6 +158,7 @@ function HomePage({ handleLogin }) {
         handleCloseModal={handleCloseSignupModal}
         onError={handleError}
       />
+      <div main-para-div>
       <p className="para-home-page">
         Welcome to our amazing Priority Pet app with a delightful twist! Our
         innovative application combines the functionality of a traditional task
@@ -183,7 +184,7 @@ function HomePage({ handleLogin }) {
         experience!
       </p>
       </div>
-  
+    </div>
   );
 }
 
