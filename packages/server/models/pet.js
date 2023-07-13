@@ -11,7 +11,7 @@ const petSchema = new mongoose.Schema({
   },
   healthLevel: {
     type: Number,
-    default: 0,
+    default: 100,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 
+
 const Login = ({ showModal, handleCloseModal, onError, onLogin }) => {
   const [data, setData] = useState({ email: "", password: "" });
   const { signIn } = useAuth();
@@ -9,7 +10,9 @@ const Login = ({ showModal, handleCloseModal, onError, onLogin }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
+    
   };
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,17 +27,17 @@ const Login = ({ showModal, handleCloseModal, onError, onLogin }) => {
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header
+        id="loginModalHeader"
         closeButton
         style={{
           fontSize: "x-large",
           color: "white",
-          backgroundColor: "green",
           marginBottom: "-1px",
         }}
       >
         <Modal.Title>Login</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ backgroundColor: "green" }}>
+      <Modal.Body id="loginModalBody">
         <form onSubmit={handleLogin}>
           <input
             style={{ fontSize: "20px", borderRadius: "8px" }}

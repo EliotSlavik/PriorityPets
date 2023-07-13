@@ -1,4 +1,4 @@
-import React, { useState, onEffect } from "react";
+import React, { useState, onEffect, useEffect } from "react";
 import PetPicker from "../components/PetPicker";
 import "./PetPage.css";
 import { Modal, Button } from "react-bootstrap";
@@ -7,6 +7,9 @@ import NavBar from "../components/Navbar.js";
 import { motion } from "framer-motion";
 import useAuth from "../hooks/useAuth";
 import usePet from "../hooks/usePet";
+import { petContext } from "../contexts/petContext";
+import { toast } from "react-toastify";
+import axios from "../util/axiosConfig";
 
 const imgs = ["/x2/Cat_Down@2x.png", "/x2/Chick_Down@2x.png", "/x2/Fox_Down@2x.png", "/x2/Mouse_Down@2x.png", "/x2/Pig_Down@2x.png", "/x2/Rabbit_Down@2x.png"];
 
@@ -17,19 +20,36 @@ function PetPage() {
   const [value, setValue] = useState(0);
   const [isActivated, setIsActivated] = useState(false);
   const [showPetDiv, setShowPetDiv] = useState(false);
+  const [showChooseButton, setShowChooseButton] = useState(true);
   const [showJumpButton, setShowJumpButton] = useState(false);
+  const [increaseHealth, setIncreaseHealth] = useState("");
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
-  const { pet } = usePet();
+  const { pet, setPet } = usePet();
   const { createPet } = usePet();
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
-    healthLevel: 100,
     userId: auth.user._id,
   });
 
-  console.log(formData.name);
+  console.log(pet);
+  console.log(auth.user.currentPet);
+  console.log(auth.user._id);
+
+  useEffect(() => {
+    if (!(pet.name === undefined)) {
+      console.log("hello");
+      showPetDivLogin();
+    }
+  }, [pet.name]);
+
+  useEffect(() => {
+    if (pet.healthLevel === 0) {
+      petHealthLevelZero();
+    }
+  }, [pet.healthLevel]);
+
   const openModal = (e) => {
     e.preventDefault();
     setShow(true);
@@ -48,19 +68,40 @@ function PetPage() {
     setOpen(false);
   };
 
+  const petHealthLevelZero = () => {
+    setShowPetName(false);
+    setSelectedPet(pet.appearance);
+    setShowPetDiv(false);
+    setShowJumpButton(false);
+    setShowChooseButton(false);
+  };
+
+  const showPetDivLogin = () => {
+    const authPetName = auth.user.pets.currentPet.name;
+    if (pet.name === authPetName && pet.name !== undefined && authPetName !== undefined && pet.healthLevel !== 0) {
+      setShowPetDiv(true);
+      setShowJumpButton(true);
+      setShowChooseButton(false);
+    } else {
+      return;
+    }
+  };
+
+  const petNameNotEntered = () => {
+    if (formData.name === "") {
+      return toast("Please enter pet's name");
+    }
+  };
+
   const handlePetSelection = async (event) => {
     setShow(false);
-    setShowPetDiv(true);
-    setShowJumpButton(true);
-    setShowPetName(true);
-    setFormData({
-      name: formData.name,
-      appearance: formData.appearance,
-      userId: auth.user._id,
-    });
-    if (formData.name !== "") {
-      setShow(false);
-      createPet(formData.name, formData.appearance, formData.userId);
+
+    try {
+      const response = await axios.post("pets/", formData);
+      console.log("Updated pet:", response.data);
+      setPet(response.data.pet);
+    } catch (error) {
+      console.log("Error occurred while updating the pet:", error);
     }
   };
 
@@ -69,21 +110,46 @@ function PetPage() {
     setIsActivated(!isActivated);
   };
 
+  const increasePetHealth = () => {
+    console.log(pet);
+  };
+
+  console.log(pet.appearance);
+  console.log(showChooseButton);
+  console.log(showPetDiv);
   return (
     <>
       <div className="main-background-div">
         <NavBar />
-        <h1 className={showPetName ? "pet-title-hide" : "pet-title"}> Welcome To Your Pet's Page</h1>
-        <h1 className={showPetName ? "pet-title" : "pet-title-hide"}>{`${formData.name}'s Forever Home`}</h1>
-        {/* This button renders differently on the page when the health is greater than 0. */}
-        <Button className={formData.healthLevel <= 0 ? "button-card" : "button-card-indiv"} onClick={openModal}>
-          Choose Your Pet
-        </Button>
+        {pet.name ? (
+          <>
+            <h1 className="pet-title-hide">Welcome To Your Pet's Page</h1>
+            <h1 className="pet-title">{`${pet.name}'s Forever Home`}</h1>
 
-        <Button className={showJumpButton ? "jump-button" : "jump-button-hide"} onClick={handleButtonClick}>
-          Wanna See Me Jump?
-        </Button>
+            <Button className="button-card-hide" onClick={openModal}>
+              Choose Your Pet
+            </Button>
+          </>
+        ) : (
+          <>
+            <h1 className="pet-title">Welcome To Your Pet's Page</h1>
 
+            {/* This button renders differently on the page when the health is greater than 0. */}
+
+            <Button className="button-card" onClick={openModal}>
+              Choose Your Pet
+            </Button>
+          </>
+        )}
+        {pet.name ? (
+          <Button className="jump-button" onClick={handleButtonClick}>
+            Wanna See Me Jump?
+          </Button>
+        ) : (
+          <Button className="jump-button-hide" onClick={handleButtonClick}>
+            Wanna See Me Jump?
+          </Button>
+        )}
         <Modal show={show} className="pet-modal">
           <Modal.Header
             closeButton
@@ -99,12 +165,13 @@ function PetPage() {
             Welcome To The Pet Store
           </Modal.Header>
           <PetPicker selected={selectedPet} setSelectedPet={setSelectedPet} formData={formData} setFormData={setFormData} imgs={imgs} handlePetSelection={handlePetSelection} />
-          <Button onClick={handlePetSelection} className="handle-pet-btn">
+
+          <Button onClick={formData.name ? handlePetSelection : petNameNotEntered} className="handle-pet-btn">
             Choose
           </Button>
         </Modal>
         {/* The cemetary button only renders when the health is 0 */}
-        <Button className={formData.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"} onClick={openGraveModal}>
+        <Button className={pet.healthLevel <= 0 ? "graveyard-button" : "graveyard-button-hide"} onClick={openGraveModal}>
           Visit Pet Cemetary
         </Button>
         <Modal show={open} className="grave-modal">
@@ -122,14 +189,29 @@ function PetPage() {
             Revive Your Pet
           </Modal.Header>
           <GravePicker />
+          <Button onClick={increasePetHealth}>Restore</Button>
         </Modal>
-        <div className={showPetDiv ? "pet-dec-card" : "pet-dec-card-hide"}>
-          <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
+        {pet.name ? (
+          <div className="pet-dec-card">
+            <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
 
-          <img className="waterBowl" alt="water bowl" src="/accessories/waterbowl.png" />
-          <motion.img animate={{ x: value * 8 + "px" }} className={isActivated ? "petty-move" : "petty"} alt="pet" src={selectedPet} />
-          <img className="petHouse" alt="pet house" src="/accessories/pethouse.png" />
-        </div>
+            <img className="waterBowl" alt="water bowl" src="/accessories/waterbowl.png" />
+
+            <motion.img animate={{ x: value * 8 + "px" }} className={isActivated ? "petty-move" : "petty"} alt="pet" src={handlePetSelection ? pet.appearance : selectedPet} />
+
+            <img className="petHouse" alt="pet house" src="/accessories/pethouse.png" />
+          </div>
+        ) : (
+          <div className="pet-dec-card-hide">
+            <img className="foodBowl" alt="food bowl" src="/accessories/foodbowl.png" />
+
+            <img className="waterBowl" alt="water bowl" src="/accessories/waterbowl.png" />
+
+            <motion.img animate={{ x: value * 8 + "px" }} className={isActivated ? "petty-move" : "petty"} alt="pet" src={handlePetSelection ? pet.appearance : selectedPet} />
+
+            <img className="petHouse" alt="pet house" src="/accessories/pethouse.png" />
+          </div>
+        )}
         <div className="graveyard-holder"></div>
       </div>
     </>

@@ -1,18 +1,18 @@
 export default {
   app: {
-    port: process.env.POST || 3001,
+    port: process.env.PORT || 3001,
     apiUrl: process.env.API_URL || "/api",
     hashSalt: "",
   },
   auth: {
     hashRounds: Number(process.env.HASH_ROUNDS) || 10,
-    accessTokenSecret: "t1SkP!lz",
-    accessTokenExp: "7d",
-    refreshTokenSecret: "t1SkP!lz",
-    refreshTokenExp: "7d",
+    accessTokenSecret: process.env.ACCESS_TOKEN_SECRET  || "t1SkP!lz",
+    accessTokenExp: process.env.ACCESS_TOKEN_TTL || "7d",
+    refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || "t1SkP!lz",
+    refreshTokenExp: process.env.REFRESH_TOKEN_TTL || "7d",
   },
   db: {
-    url: process.env.MONGO_URI || "mongodb+srv://eliotslavik:password1234@prioritypet.eqxedmq.mongodb.net/?retryWrites=true&w=majority",
+    url: process.env.MONGO_URI || "mongodb+srv://CliffordHunter:password1234@prioritypet.eqxedmq.mongodb.net/?retryWrites=true&w=majority",
   },
   constants: {
     email_regex:

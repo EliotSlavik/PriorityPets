@@ -9,7 +9,7 @@ export default function NavBar() {
   return (
     <div className="nav">
       <Link to="/" className="title">
-        Priority Pets
+        Priority Pet
       </Link>
       <nav>
         <ul>

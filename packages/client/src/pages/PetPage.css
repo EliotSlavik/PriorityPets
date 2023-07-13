@@ -38,7 +38,7 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 295px;
+  margin-top: 350px;
   padding-right: 20px;
 }
 
@@ -54,7 +54,7 @@
   position: relative;
   font-size: larger;
   top: 110px;
-  right: 110px;
+  left: 150px;
   background-color: black;
   border: 1px black solid;
   border-radius: 15px;
@@ -76,6 +76,10 @@
   font-size: 22px;
   top: 110px;
   left: 400px;
+}
+
+.button-card-hide {
+  display: none;
 }
 
 .button-card-indiv {
@@ -111,7 +115,6 @@
 .pet-title-hide {
   display: none;
 }
-
 
 .grave {
   position: relative;
@@ -168,6 +171,14 @@ input {
 .jump-button:hover {
   background-color: darkblue;
   box-shadow: 0 0 0 1px darkblue;
+}
+
+.create-pet-div {
+  background-color: transparent;
+}
+
+.create-pet-div-hide {
+  display: none;
 }
 
 @media (min-width: 1920px) {
