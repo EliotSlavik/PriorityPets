@@ -88,6 +88,10 @@ function PetPage() {
     createPet(formData);
   };
 
+  const handleJumpButton = () => {
+    setIsActivated(!isActivated);
+  };
+
   const handleButtonClick = () => {
     handlePetSelection();
   };
