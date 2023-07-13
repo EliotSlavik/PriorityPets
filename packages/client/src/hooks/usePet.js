@@ -8,10 +8,12 @@ const usePet = () => {
   const { setCurrentPet } = useAuth();
   const { pet, setPet } = useContext(petContext);
 
-  const getPet = async (onError) => {
-    if (auth.user.pets.currentPet !== undefined || auth.user.pets.currentPet !== []) {
+  const getPet = async () => {
+    console.log(auth.user.pets);
+
+    if (auth && auth.user.pets.currentPet !== undefined && auth.user.pets.currentPet !== []) {
       api
-        .get(`/pet/${auth.user.pets.currentPet._id}`)
+        .get(`/pets/${auth.user.pets.currentPet}`)
         .then((response) => {
           const { currentPet } = response.data;
           setPet(currentPet);
@@ -22,18 +24,26 @@ const usePet = () => {
     }
   };
 
-  const createPet = async (name, appearance, userId) => {
+  const createPet = async (formData) => {
+    let { name, appearance, userId } = formData;
+
     try {
       const response = await api.post("pets/", { name, appearance, userId });
       setPet(response.data);
-      setCurrentPet(response.data);
+      setCurrentPet(response.data._id);
     } catch (error) {
       console.log("Error occurred while updating the pet:", error);
     }
   };
 
-  const feedPet = async (pet, onError) => {
-    //Move petGame logic here.
+  const feedPet = async (userId) => {
+    try {
+      const response = await api.put("pets/feed", { userId });
+      setPet(response.data);
+      setCurrentPet(response.data);
+    } catch (error) {
+      console.log("Error occurred while updating the pet:", error);
+    }
   };
 
   useEffect(() => {
@@ -42,6 +52,7 @@ const usePet = () => {
 
   return {
     pet,
+    //setPet,
     getPet,
     createPet,
     feedPet,

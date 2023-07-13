@@ -14,11 +14,6 @@ export default function NavBar() {
       <nav>
         <ul>
           <li>
-            <Link className="link" to="/">
-              Home
-            </Link>
-          </li>
-          <li>
             <Link className="link" to="/taskpage">
               Priorities
             </Link>

@@ -47,6 +47,7 @@ router.post("/", async (request, response) => {
 
 router.put("/complete", async (request, response) => {
   const { userId, taskId } = request.body;
+
   try {
     const task = await Task.findById(taskId);
     const user = await User.findById(userId);

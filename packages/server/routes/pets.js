@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/:id", async (request, response) => {
   const id = request.params.id;
+  console.log(id);
 
   try {
     const pet = await Pet.findById(id).exec();
@@ -44,7 +45,7 @@ router.post("/:id", async (request, response) => {
 });
 
 router.post("/heal/:id", async (request, response) => {
-  const id = request.params.id;
+  const { id } = request.params;
 
   try {
     const pet = await Pet.findById(id).exec();

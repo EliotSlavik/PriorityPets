@@ -25,7 +25,7 @@ function PetPage() {
   const [increaseHealth, setIncreaseHealth] = useState("");
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
-  const { pet, setPet } = usePet();
+  const { pet } = usePet();
   const { createPet } = usePet();
   const [formData, setFormData] = useState({
     name: "",
@@ -34,12 +34,12 @@ function PetPage() {
   });
 
   console.log(pet);
-  console.log(auth.user.currentPet);
-  console.log(auth.user._id);
+  //console.log(auth.user.currentPet);
+  //console.log(auth.user._id);
 
   useEffect(() => {
     if (!(pet.name === undefined)) {
-      console.log("hello");
+      //console.log("hello");
       showPetDivLogin();
     }
   }, [pet.name]);
@@ -96,13 +96,7 @@ function PetPage() {
   const handlePetSelection = async (event) => {
     setShow(false);
 
-    try {
-      const response = await axios.post("pets/", formData);
-      console.log("Updated pet:", response.data);
-      setPet(response.data.pet);
-    } catch (error) {
-      console.log("Error occurred while updating the pet:", error);
-    }
+    createPet(formData);
   };
 
   const handleButtonClick = () => {
@@ -114,9 +108,9 @@ function PetPage() {
     console.log(pet);
   };
 
-  console.log(pet.appearance);
-  console.log(showChooseButton);
-  console.log(showPetDiv);
+  // console.log(pet.appearance);
+  // console.log(showChooseButton);
+  // console.log(showPetDiv);
   return (
     <>
       <div className="main-background-div">

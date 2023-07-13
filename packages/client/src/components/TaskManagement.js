@@ -57,7 +57,6 @@ function TaskManagement({ userEmail }) {
     axios
       .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
-        console.log(response.data);
         setTasks([...tasks, newTask]);
       })
       .catch((error) => {
@@ -87,9 +86,14 @@ function TaskManagement({ userEmail }) {
     const updatedTasks = [...tasks];
     updatedTasks[index].completed = !updatedTasks[index].completed; // Toggle the completed value back and forth
     setTasks(updatedTasks);
-    axios.put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id }).catch((error) => {
-      console.log(error);
-    });
+    axios
+      .put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // Edit task
@@ -259,7 +263,8 @@ function TaskManagement({ userEmail }) {
                       onHide={() => setShowEditModal(false)}
                     >
                       <Modal.Header id="editTaskModalHeader" closeButton style={{ fontSize: "30px", marginBottom: "-70px" }}></Modal.Header>
-                      <div id="TaskModalEdit"
+                      <div
+                        id="TaskModalEdit"
                         className="container mt-5"
                         style={{
                           borderRadius: "20px",
