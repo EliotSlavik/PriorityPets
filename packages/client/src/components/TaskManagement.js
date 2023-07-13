@@ -42,7 +42,6 @@ function TaskManagement({ userEmail }) {
   };
 
   const handleAddTask = () => {
-    console.log(userEmail);
     const newTask = {
       name,
       description,
@@ -88,14 +87,9 @@ function TaskManagement({ userEmail }) {
     const updatedTasks = [...tasks];
     updatedTasks[index].completed = !updatedTasks[index].completed; // Toggle the completed value back and forth
     setTasks(updatedTasks);
-    axios
-      .put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    axios.put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id }).catch((error) => {
+      console.log(error);
+    });
   };
 
   // Edit task
@@ -108,10 +102,15 @@ function TaskManagement({ userEmail }) {
       priority: editPriority,
       dueDate: editDueDate,
       reminder: editReminder,
-      userEmail, // Add userEmail to the edited task
+      userEmail,
     };
     updatedTasks[editIndex] = editedTask;
     setTasks(updatedTasks);
+
+    axios.put(`http://localhost:3001/api/tasks/edit`, { editedTask, taskId: _id }).catch((error) => {
+      console.log(error);
+    });
+
     setEditIndex(null);
     setShowEditModal(false);
     setEditName("");
@@ -209,7 +208,6 @@ function TaskManagement({ userEmail }) {
             </div>
           </div>
         </Modal>
-        {console.log(tasks)}
         {tasks.map((task, index) => (
           <div key={index} className="listDiv">
             <ol>

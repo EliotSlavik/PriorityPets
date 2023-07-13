@@ -76,4 +76,32 @@ router.post("/", async (request, response) => {
   }
 });
 
+router.put("/feed", async (req, res) => {
+  const { userId, petId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    const pet = await Pet.findById(petId);
+
+    if (!user || !pet) {
+      return res.status(404).json({ error: "User or pet not found" });
+    }
+
+    if (user.points >= 1) {
+      pet.healthLevel = Math.min(pet.healthLevel + 10, 100);
+      await pet.save();
+
+      user.points -= 1;
+      await user.save();
+
+      return res.json({ message: "Successfully fed the pet" });
+    } else {
+      return res.status(403).json({ error: "Insufficient points" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

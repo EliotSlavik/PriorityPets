@@ -10,17 +10,17 @@ const usePet = () => {
 
   const getPet = async (onError) => {
     if (auth.user.pets.currentPet !== undefined || auth.user.pets.currentPet !== []) {
-      //setPet(auth.pets.currentpet);
-      // api
-      //   .get(`/pet/${auth.pets.currentpet}`)
-      //   .then((response) => {
-      //     const { currentPet } = response.data;
-      //     //setPet();
-      //   })
-      //   .catch((error) => {
-      //     // console.log(error);
-      //     onError(error);
-      //   });
+      setPet(auth.pets.currentpet);
+      api
+        .get(`/pet/${auth.pets.currentpet}`)
+        .then((response) => {
+          const { currentPet } = response.data;
+          //setPet();
+        })
+        .catch((error) => {
+          // console.log(error);
+          onError(error);
+        });
     }
   };
 

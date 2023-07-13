@@ -117,4 +117,27 @@ router.delete("/delete/:taskId/:userId", async (request, response) => {
   }
 });
 
+router.put("/edit", async (request, response) => {
+  const { editedTask, taskId } = request.body;
+  try {
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return response.status(404).json({ error: "Task not found." });
+    }
+
+    task.name = editedTask.name;
+    task.description = editedTask.description;
+    task.priority = editedTask.priority;
+    task.dueDate = editedTask.dueDate;
+    task.reminder = editedTask.reminder;
+
+    await task.save();
+
+    response.json(task);
+  } catch (error) {
+    response.status(500).json({ error: "An error occurred when completing the task." });
+  }
+});
+
 module.exports = router;

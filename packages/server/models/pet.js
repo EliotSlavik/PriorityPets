@@ -22,6 +22,10 @@ const petSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  lastTimeDamaged: {
+    type: Date,
+    default: null,
+  },
   // lifespan: {
   //   type: Number,
   //   default: 0,

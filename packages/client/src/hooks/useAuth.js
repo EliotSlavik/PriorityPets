@@ -2,10 +2,12 @@ import { useContext } from "react";
 import { authContext } from "../contexts/authContext";
 import api, { setAuthHeaders } from "../util/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import { petContext } from "../contexts/petContext";
 
 const useAuth = () => {
   const { auth, setAuth } = useContext(authContext);
   const navigate = useNavigate();
+  const { pet, setPet } = useContext(petContext);
 
   const signUp = async (email, username, password, onError) => {
     api
@@ -49,6 +51,8 @@ const useAuth = () => {
 
     // Clear local storage
     localStorage.removeItem("PriorityUser");
+
+    setPet([]);
 
     // Navigate to "/"
     navigate("/");
