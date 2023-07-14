@@ -6,9 +6,19 @@ const api = axios.create({
 });
 
 export const setAuthHeaders = (token) => {
-  if (!token) delete api.defaults.headers.common["Authorization"];
-
-  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  if (token) {
+    localStorage.setItem("accessToken", token); // Store the token in local storage
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common["Authorization"];
+    localStorage.removeItem("accessToken"); // Remove the token from local storage
+  }
 };
+
+// Check if a token is stored in local storage and set it as the default bearer token
+const storedToken = localStorage.getItem("accessToken");
+if (storedToken) {
+  setAuthHeaders(storedToken);
+}
 
 export default api;
