@@ -8,10 +8,11 @@ import "./TaskManagement.css";
 import axios from "../util/axiosConfig";
 import useAuth from "../hooks/useAuth";
 
-const bgColor = ["lightblue", "lightgray", "orangered"];
+const bgColor = ["lightblue", "orange", "orangered", "red"];
 
 function TaskManagement({ userEmail }) {
   const { auth } = useAuth();
+  const { setNewAuth } = useAuth();
 
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
@@ -57,7 +58,7 @@ function TaskManagement({ userEmail }) {
     axios
       .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
-        setTasks([...tasks, newTask]);
+        setTasks([...tasks, response.data]);
       })
       .catch((error) => {
         console.log(error);
@@ -89,7 +90,7 @@ function TaskManagement({ userEmail }) {
     axios
       .put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id })
       .then((response) => {
-        console.log(response.data);
+        setNewAuth(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -148,11 +149,7 @@ function TaskManagement({ userEmail }) {
       if (element) {
         // Check if the element exists
         if (diff < 30) {
-          element.style.backgroundColor = bgColor[2];
-        } else if (diff < 60) {
-          element.style.backgroundColor = bgColor[1];
-        } else {
-          element.style.backgroundColor = bgColor[0];
+          element.style.backgroundColor = bgColor[3];
         }
       }
     });
@@ -194,7 +191,7 @@ function TaskManagement({ userEmail }) {
               <input type="text" className="form-control mb-2" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
               <textarea className="form-control mb-2" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
               <select className="form-control mb-2" name="Priority" onChange={(e) => setPriority(e.target.value)}>
-                <option value="">Priority</option>
+                <option value={0}>Priority</option>
                 <option value={0}>Low</option>
                 <option value={1}>Medium</option>
                 <option value={2}>High</option>
@@ -219,7 +216,7 @@ function TaskManagement({ userEmail }) {
                 className="task"
                 id={index} // Add the ID 'index' to the list item
                 style={{
-                  backgroundColor: bgColor[task.priority],
+                  backgroundColor: bgColor[parseInt(task.priority)],
                 }}
               >
                 <div className="holder">
@@ -248,7 +245,11 @@ function TaskManagement({ userEmail }) {
                   {task.description && <div className="description main">{task.description}</div>}
                   <br></br>
                   <div className="main">
-                    <span className="priority">Priority: </span>
+                    <span className="priority">
+                      Priority:{" "}
+                      {parseInt(task.priority) === 0 ? "Low" : parseInt(task.priority) === 1 ? "Medium" : parseInt(task.priority) === 2 ? "High" : `Invalid Priority: ${parseInt(task.priority)}`}
+                    </span>
+
                     <br></br>
                     <span className="para">Due: {task.dueDate ? moment(task.dueDate).format("ddd MMM DD 'YY h:mm") : "-"}</span>
                     <br></br>
@@ -278,7 +279,7 @@ function TaskManagement({ userEmail }) {
                           <input type="text" className="form-control mb-2" placeholder="Name" value={editName} onChange={(e) => setEditName(e.target.value)} />
                           <textarea className="form-control mb-2" placeholder="Description" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
                           <select className="form-control mb-2" name="Priority" value={editPriority} onChange={(e) => setEditPriority(e.target.value)}>
-                            <option value="">Priority</option>
+                            <option value={0}>Priority</option>
                             <option value={0}>Low</option>
                             <option value={1}>Medium</option>
                             <option value={2}>High</option>

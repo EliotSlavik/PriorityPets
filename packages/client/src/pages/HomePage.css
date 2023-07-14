@@ -118,11 +118,11 @@ body {
 
 .button-33 {
   display: block;
-  background-color: rgb(24,147,255);
+  background-color: rgb(24, 147, 255);
   border-radius: 100px;
   color: rgb(242, 234, 234);
   cursor: pointer;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   padding: 1.5rem 3rem;
   text-align: center;
   text-decoration: none;
@@ -161,13 +161,13 @@ body {
 .para-home-page {
   position: absolute;
   font-size: larger;
-  border-left: 20px rgb(24,147,255) solid;
-  border-right: 20px rgb(24,147,255) solid;
+  border-left: 20px rgb(24, 147, 255) solid;
+  border-right: 20px rgb(24, 147, 255) solid;
   background-color: rgb(241, 154, 79);
   color: white;
   border-radius: 15px;
   bottom: -400px;
-  left: 350px;
+  left: 31%;
   max-width: 750px;
   max-height: 830px;
   min-height: 100px;
@@ -176,8 +176,6 @@ body {
   align-items: flex-start;
   padding: 10px;
 }
-
-
 
 @keyframes jiggle {
   0% {
@@ -206,8 +204,8 @@ body {
   .para-home-page {
     position: absolute;
     font-size: larger;
-    border-left: 20px rgb(24,147,255) solid;
-    border-right: 20px rgb(24,147,255) solid;
+    border-left: 20px rgb(24, 147, 255) solid;
+    border-right: 20px rgb(24, 147, 255) solid;
     background-color: rgb(241, 154, 79);
     color: white;
     border-radius: 15px;
@@ -227,8 +225,8 @@ body {
   .para-home-page {
     position: absolute;
     font-size: larger;
-    border-left: 20px rgb(24,147,255) solid;
-    border-right: 20px rgb(24,147,255) solid;
+    border-left: 20px rgb(24, 147, 255) solid;
+    border-right: 20px rgb(24, 147, 255) solid;
     background-color: rgb(241, 154, 79);
     color: white;
     border-radius: 15px;
@@ -248,8 +246,8 @@ body {
   .para-home-page {
     position: absolute;
     font-size: larger;
-    border-left: 20px rgb(24,147,255) solid;
-    border-right: 20px rgb(24,147,255) solid;
+    border-left: 20px rgb(24, 147, 255) solid;
+    border-right: 20px rgb(24, 147, 255) solid;
     background-color: rgb(241, 154, 79);
     color: white;
     border-radius: 15px;
@@ -269,8 +267,8 @@ body {
   .para-home-page {
     position: absolute;
     font-size: larger;
-    border-left: 20px rgb(24,147,255) solid;
-    border-right: 20px rgb(24,147,255) solid;
+    border-left: 20px rgb(24, 147, 255) solid;
+    border-right: 20px rgb(24, 147, 255) solid;
     background-color: rgb(241, 154, 79);
     color: white;
     border-radius: 15px;
@@ -290,8 +288,8 @@ body {
   .para-home-page {
     position: absolute;
     font-size: larger;
-    border-left: 20px rgb(24,147,255) solid;
-    border-right: 20px rgb(24,147,255) solid;
+    border-left: 20px rgb(24, 147, 255) solid;
+    border-right: 20px rgb(24, 147, 255) solid;
     background-color: rgb(241, 154, 79);
     color: white;
     border-radius: 15px;
@@ -318,7 +316,6 @@ body {
   .newUser {
     margin-left: 20%;
   }
-
 }
 
 @media (max-width: 480px) {
@@ -336,19 +333,27 @@ body {
 }
 
 #loginModalHeader {
-  background-color: rgb(24,147,255);
+  background-color: rgb(24, 147, 255);
+  width: 600px;
+  max-height: 100%;
 }
 
 #loginModalBody {
   background-color: rgb(248, 248, 127);
+  width: 600px;
+  max-height: 100%;
 }
 
 #signupModalHeader {
-  background-color: rgb(24,147,255);
+  background-color: rgb(24, 147, 255);
+  width: 600px;
+  max-height: 100%;
 }
 
 #signupModalBody {
   background-color: rgb(248, 248, 127);
+  width: 600px;
+  max-height: 100%;
 }
 
 @media (max-width: 1189px) {

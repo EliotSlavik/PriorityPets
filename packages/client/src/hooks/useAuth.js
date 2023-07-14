@@ -9,15 +9,10 @@ const useAuth = () => {
   const navigate = useNavigate();
   const { pet, setPet } = useContext(petContext);
 
-  const signUp = async (email, username, password, onError) => {
-    api
-      .post("/auth/signup", { email, username, password })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        onError(error);
-      });
+  const signUp = async (email, username, password, confirmPassword, onError) => {
+    api.post("/auth/signup", { email, username, password, confirmPassword }).catch((error) => {
+      onError(error);
+    });
   };
 
   const signIn = async (email, password, onError) => {
@@ -46,6 +41,10 @@ const useAuth = () => {
     setAuth({ ...auth, user: updatedUser });
   };
 
+  const setNewAuth = (inputUser) => {
+    setAuth({ ...auth, user: inputUser });
+  };
+
   const signOut = () => {
     setAuth({ isAuthenticated: false, user: null }); // Update auth state
 
@@ -64,6 +63,7 @@ const useAuth = () => {
     signIn,
     signOut,
     setCurrentPet,
+    setNewAuth,
   };
 };
 

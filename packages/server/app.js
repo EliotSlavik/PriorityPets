@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import cron from "node-cron";
-import { processUsers } from "./cron/petProcessing.js";
+import processUsers from "./cron/petProcessing.js";
 
 // Database
 dotenv.config();
@@ -37,4 +37,4 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
-// cron.schedule('0 0 * * *', processUsers); // Executes at 00:00 (midnight) every day
+cron.schedule("0 0 * * *", processUsers); // Executes at 00:00 (midnight) every day

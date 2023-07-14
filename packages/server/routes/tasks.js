@@ -1,5 +1,6 @@
 import express from "express";
 const { Task, User } = require("../models");
+import requireAuth from "../middleware/requireAuth";
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get("/", async (request, response) => {
   }
 });
 
-router.post("/", async (request, response) => {
+router.post("/", requireAuth, async (request, response) => {
   const { name, description, priority, category, dueDate, completed, reminder, userEmail } = request.body;
 
   if (!name || !dueDate || !userEmail) {
@@ -45,7 +46,7 @@ router.post("/", async (request, response) => {
   }
 });
 
-router.put("/complete", async (request, response) => {
+router.put("/complete", requireAuth, async (request, response) => {
   const { userId, taskId } = request.body;
 
   try {
@@ -84,13 +85,13 @@ router.put("/complete", async (request, response) => {
       }
     }
 
-    response.json(task);
+    response.json(user);
   } catch (error) {
     response.status(500).json({ error: "An error occurred when completing the task." });
   }
 });
 
-router.delete("/delete/:taskId/:userId", async (request, response) => {
+router.delete("/delete/:taskId/:userId", requireAuth, async (request, response) => {
   try {
     const { taskId, userId } = request.params;
 
@@ -118,7 +119,7 @@ router.delete("/delete/:taskId/:userId", async (request, response) => {
   }
 });
 
-router.put("/edit", async (request, response) => {
+router.put("/edit", requireAuth, async (request, response) => {
   const { editedTask, taskId } = request.body;
   try {
     const task = await Task.findById(taskId);

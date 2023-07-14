@@ -3,12 +3,11 @@
   border-radius: 0 0 22px;
   border-radius: 0 0 0px 0px;
   height: 300px;
-  
 }
 
 .sign-up-input1 {
   margin-top: 30px;
-  margin-left: 10px;
+  margin-left: 40px;
   font-size: 18px;
   border-radius: 5px;
 }
@@ -22,7 +21,7 @@
 
 .sign-up-input3 {
   margin-top: 30px;
-  margin-left: 10px;
+  margin-left: 40px;
   font-size: 18px;
   border-radius: 5px;
 }
@@ -35,7 +34,7 @@
 }
 
 .sign-up-button {
-  margin-left: 160px;
+  margin-left: 230px;
   margin-top: 30px;
   font-size: x-large;
   border-radius: 10px;

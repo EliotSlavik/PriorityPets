@@ -40,7 +40,7 @@ const Login = ({ showModal, handleCloseModal, onError, onLogin }) => {
       <Modal.Body id="loginModalBody">
         <form onSubmit={handleLogin}>
           <input
-            style={{ fontSize: "18px", borderRadius: "8px", marginLeft: "20px" }}
+            style={{ fontSize: "18px", borderRadius: "8px", marginLeft: "70px" }}
             type="email"
             name="email"
             placeholder="Email"
@@ -62,7 +62,7 @@ const Login = ({ showModal, handleCloseModal, onError, onLogin }) => {
           <Button
             style={{
               fontSize: "x-large",
-              marginLeft: "184px",
+              marginLeft: "225px",
               marginTop: "30px",
               borderRadius: "12px",
             }}

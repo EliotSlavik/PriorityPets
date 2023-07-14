@@ -125,7 +125,6 @@ function PetPage() {
           <>
             <h1 className="pet-title-hide">Welcome To Your Pet's Page</h1>
             <h1 className="pet-title">{`${pet.name}'s Forever Home`}</h1>
-
             <Button className="button-card-hide" onClick={openModal}>
               Choose Your Pet
             </Button>
@@ -143,6 +142,17 @@ function PetPage() {
         )}
         {pet.name ? (
           <>
+            <div className="game-status-div">
+              <div className="current-points">{`Current Points: ${auth.user.points}`}</div>
+              <div className="health-bar">
+                <div className="health-bar-inner" style={{ width: `${pet.healthLevel}%` }}>
+                  Health
+                </div>
+              </div>
+            </div>
+            <Button className="feed-pet-btn" onClick={handleFeedPet}>
+              Feed Pet
+            </Button>
             <Button className="jump-button" onClick={handleJumpButton}>
               Wanna See Me Jump?
             </Button>
@@ -153,13 +163,13 @@ function PetPage() {
           </Button>
         )}
 
-        <div className="current-points">{`Current Points: ${auth.user.points}`}</div>
+        {/* <div className="current-points">{`Current Points: ${auth.user.points}`}</div>
         <Button onClick={handleFeedPet}>Feed Pet</Button>
         <div className="health-bar">
           <div className="health-bar-inner" style={{ width: `${pet.healthLevel}%` }}>
             Health
           </div>
-        </div>
+        </div> */}
 
         <Modal show={show} className="pet-modal">
           <Modal.Header
