@@ -38,7 +38,6 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  max-height: 600px;
   margin-top: 350px;
   padding-right: 20px;
 }
@@ -50,8 +49,6 @@
 .cemetery {
   width: 250px;
 }
-
-
 
 .graveyard-button {
   position: relative;
@@ -185,45 +182,16 @@ input {
 }
 
 .health-bar {
- margin-right: 30px;
   width: 200px;
   height: 20px;
-  border-radius: 3px;
   background-color: #eee;
   border: 1px solid #000;
 }
 
 .health-bar-inner {
   height: 100%;
-  padding-left: 10px;
-  color: rgb(233, 229, 0);
-  font-weight: bolder;
   background-color: red;
-  border-radius: 3px;
   transition: width 0.3s ease-in-out;
-}
-
-.current-points {
-margin-left: 30px;
-font-weight: bolder;
-}
-
-.feed-pet-btn {
-  background-color: black;
-  border-radius: 15px;
-  position: absolute;
-  left: 300px;
-  top: 300px;
-
-}
-
-.game-status-div {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  height: 35px;
-  top: -65px;
 }
 
 @media (min-width: 1920px) {
