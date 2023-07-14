@@ -10,14 +10,9 @@ const useAuth = () => {
   const { pet, setPet } = useContext(petContext);
 
   const signUp = async (email, username, password, confirmPassword, onError) => {
-    api
-      .post("/auth/signup", { email, username, password, confirmPassword })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        onError(error);
-      });
+    api.post("/auth/signup", { email, username, password, confirmPassword }).catch((error) => {
+      onError(error);
+    });
   };
 
   const signIn = async (email, password, onError) => {

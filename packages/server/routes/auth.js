@@ -38,8 +38,6 @@ router.post("/signup", async (req, res, next) => {
       });
     }
 
-    console.log(keys.constants.email_regex);
-
     if (!keys.constants.email_regex.test(email)) {
       return res.status(422).json({
         message: "Validation error",

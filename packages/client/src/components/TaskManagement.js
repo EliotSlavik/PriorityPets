@@ -58,8 +58,6 @@ function TaskManagement({ userEmail }) {
     axios
       .post("http://localhost:3001/api/tasks", newTask)
       .then((response) => {
-        console.log(tasks);
-        console.log(response.data);
         setTasks([...tasks, response.data]);
       })
       .catch((error) => {
@@ -213,7 +211,6 @@ function TaskManagement({ userEmail }) {
         </Modal>
         {tasks.map((task, index) => (
           <div key={index} className="listDiv">
-            {console.log(bgColor[parseInt(task.priority)])}
             <ol>
               <li
                 className="task"
