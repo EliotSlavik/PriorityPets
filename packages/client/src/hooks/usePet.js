@@ -9,8 +9,6 @@ const usePet = () => {
   const { pet, setPet } = useContext(petContext);
 
   const getPet = async () => {
-    console.log(auth.user.pets);
-
     if (auth && auth.user.pets.currentPet !== undefined && auth.user.pets.currentPet !== []) {
       api
         .get(`/pets/${auth.user.pets.currentPet}`)
@@ -36,11 +34,10 @@ const usePet = () => {
     }
   };
 
-  const feedPet = async (userId) => {
+  const feedPet = async () => {
     try {
-      const response = await api.put("pets/feed", { userId });
-      setPet(response.data);
-      setCurrentPet(response.data);
+      const response = await api.put("pets/feed", { userId: auth.user._id, petId: auth.user.pets.currentPet });
+      setPet(response.data.pet);
     } catch (error) {
       console.log("Error occurred while updating the pet:", error);
     }
@@ -52,7 +49,6 @@ const usePet = () => {
 
   return {
     pet,
-    //setPet,
     getPet,
     createPet,
     feedPet,

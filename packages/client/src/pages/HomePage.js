@@ -122,7 +122,7 @@ function HomePage({ handleLogin }) {
         </Button>
       </div>
       <Signup showModal={showSignupModal} handleCloseModal={handleCloseSignupModal} onError={handleError} />
-      <div main-para-div>
+      <div main-para-div="true">
         <p className="para-home-page">
           Welcome to our amazing Priority Pet app with a delightful twist! Our innovative application combines the functionality of a traditional task manager with the joy of taking care of a virtual
           pet.

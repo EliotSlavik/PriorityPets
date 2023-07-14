@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get("/:id", async (request, response) => {
   const id = request.params.id;
-  console.log(id);
 
   try {
     const pet = await Pet.findById(id).exec();
@@ -95,7 +94,7 @@ router.put("/feed", async (req, res) => {
       user.points -= 1;
       await user.save();
 
-      return res.json({ message: "Successfully fed the pet" });
+      return res.json({ message: "Successfully fed the pet", pet: pet });
     } else {
       return res.status(403).json({ error: "Insufficient points" });
     }

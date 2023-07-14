@@ -25,7 +25,7 @@ function PetPage() {
   const { auth } = useAuth();
   const [selectedPet, setSelectedPet] = useState(imgs[0]);
   const { pet } = usePet();
-  const { createPet } = usePet();
+  const { createPet, feedPet } = usePet();
   const [formData, setFormData] = useState({
     name: "",
     appearance: "",
@@ -100,6 +100,10 @@ function PetPage() {
     console.log(pet);
   };
 
+  const handleFeedPet = () => {
+    feedPet();
+  };
+
   // console.log(pet.appearance);
   // console.log(showChooseButton);
   // console.log(showPetDiv);
@@ -139,6 +143,13 @@ function PetPage() {
             Wanna See Me Jump?
           </Button>
         )}
+        <div className="current-points">{`Current Points: ${auth.user.points}`}</div>
+        <Button onClick={handleFeedPet}>Feed Pet</Button>
+        <div className="health-bar">
+          <div className="health-bar-inner" style={{ width: `${pet.healthLevel}%` }}>
+            Health
+          </div>
+        </div>
         <Modal show={show} className="pet-modal">
           <Modal.Header
             closeButton
