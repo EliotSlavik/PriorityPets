@@ -12,7 +12,6 @@ const bgColor = ["lightblue", "lightgray", "orangered"];
 
 function TaskManagement({ userEmail }) {
   const { auth } = useAuth();
-  const { setNewAuth } = useAuth();
 
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
@@ -90,7 +89,7 @@ function TaskManagement({ userEmail }) {
     axios
       .put(`http://localhost:3001/api/tasks/complete`, { userId: auth.user._id, taskId: _id })
       .then((response) => {
-        setNewAuth(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);

@@ -46,10 +46,6 @@ const useAuth = () => {
     setAuth({ ...auth, user: updatedUser });
   };
 
-  const setNewAuth = (inputUser) => {
-    setAuth({ ...auth, user: inputUser });
-  };
-
   const signOut = () => {
     setAuth({ isAuthenticated: false, user: null }); // Update auth state
 
@@ -68,7 +64,6 @@ const useAuth = () => {
     signIn,
     signOut,
     setCurrentPet,
-    setNewAuth,
   };
 };
 
