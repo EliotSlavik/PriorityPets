@@ -84,7 +84,7 @@ router.put("/complete", async (request, response) => {
       }
     }
 
-    response.json(task);
+    response.json(user);
   } catch (error) {
     response.status(500).json({ error: "An error occurred when completing the task." });
   }
