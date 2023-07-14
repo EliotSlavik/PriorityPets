@@ -14,7 +14,7 @@ export default async function requireAuth(req, res, next) {
     }
     if (!payload.sub) return res.status(401).json({ message: "Unauthorized error" });
 
-    User.findeOne({ email: payload.sub }).then((user) => {
+    User.findOne({ email: payload.sub }).then((user) => {
       if (!user) {
         return res.status(401).json({ message: "Unauthorized error" });
       }
