@@ -122,24 +122,22 @@ function HomePage({ handleLogin }) {
         </Button>
       </div>
       <Signup showModal={showSignupModal} handleCloseModal={handleCloseSignupModal} onError={handleError} />
-      <div main-para-div="true">
-        <p className="para-home-page">
-          Welcome to our amazing Priority Pet app with a delightful twist! Our innovative application combines the functionality of a traditional task manager with the joy of taking care of a virtual
-          pet.
-          <br></br>
-          <br></br>
-          With Priority Pet, you can effortlessly organize your tasks and stay on top of your daily responsibilities. Create tasks, set due dates, and prioritize your to-do list for maximum
-          productivity. Our user-friendly interface makes it easy to add, update, and mark tasks as complete, ensuring you never miss a beat.
-          <br></br>
-          <br></br>
-          Priority Pet is designed to bring joy and a sense of accomplishment to your daily routine. Stay organized, complete tasks, and experience the satisfaction of caring for your virtual pet –
-          all in one convenient application.
-          <br></br>
-          <br></br>
-          Start your journey today and enjoy the productivity and fun that our Priority Pet has to offer. Make task management engaging, interactive, and rewarding – because being productive should be
-          an enjoyable experience!
-        </p>
-      </div>
+      <p className="para-home-page">
+        Welcome to our amazing Priority Pet app with a delightful twist! Our innovative application combines the functionality of a traditional task manager with the joy of taking care of a virtual
+        pet.
+        <br></br>
+        <br></br>
+        With Priority Pet, you can effortlessly organize your tasks and stay on top of your daily responsibilities. Create tasks, set due dates, and prioritize your to-do list for maximum
+        productivity. Our user-friendly interface makes it easy to add, update, and mark tasks as complete, ensuring you never miss a beat.
+        <br></br>
+        <br></br>
+        Priority Pet is designed to bring joy and a sense of accomplishment to your daily routine. Stay organized, complete tasks, and experience the satisfaction of caring for your virtual pet – all
+        in one convenient application.
+        <br></br>
+        <br></br>
+        Start your journey today and enjoy the productivity and fun that our Priority Pet has to offer. Make task management engaging, interactive, and rewarding – because being productive should be
+        an enjoyable experience!
+      </p>
     </div>
   );
 }
