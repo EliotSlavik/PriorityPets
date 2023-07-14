@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_NODE_ENV === "development" ? process.env.REACT_APP_API_DOMAIN : `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_API_URL}`,
+  baseURL: process.env.REACT_APP_NODE_ENV === "development" ? `${process.env.REACT_APP_API_DOMAIN}${process.env.REACT_APP_API_URL}` : process.env.REACT_APP_API_DOMAIN,
   withCredentials: true,
 });
 
