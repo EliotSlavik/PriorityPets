@@ -1,7 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import { User, Task, Pet } from "../models";
-import requireAuth from "../middleware/requireAuth";
 
 const router = express.Router();
 

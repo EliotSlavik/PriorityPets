@@ -33,9 +33,9 @@ function PetPage() {
     userId: auth.user._id,
   });
 
-  //console.log(pet);
+  console.log(pet);
   //console.log(auth.user.currentPet);
-  //console.log(auth.user);
+  console.log(auth.user);
 
   useEffect(() => {
     if (!(pet.name === undefined)) {

@@ -38,7 +38,6 @@ const usePet = () => {
     try {
       const response = await api.put("pets/feed", { userId: auth.user._id, petId: auth.user.pets.currentPet });
       setPet(response.data.pet);
-      console.log(response.data);
     } catch (error) {
       console.log("Error occurred while updating the pet:", error);
     }

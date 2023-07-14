@@ -9,9 +9,9 @@ const useAuth = () => {
   const navigate = useNavigate();
   const { pet, setPet } = useContext(petContext);
 
-  const signUp = async (email, username, password, confirmPassword, onError) => {
+  const signUp = async (email, username, password, onError) => {
     api
-      .post("/auth/signup", { email, username, password, confirmPassword })
+      .post("/auth/signup", { email, username, password })
       .then((response) => {
         console.log(response.data);
       })

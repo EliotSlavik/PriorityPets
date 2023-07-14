@@ -14,40 +14,19 @@ router.get("/signup", async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   try {
-    const { email, password, username, confirmPassword } = req.body;
+    const { email, password, username } = req.body;
 
     const lowercaseEmail = email.toLowerCase();
 
     let user = await User.findOne({ email: lowercaseEmail });
 
-    if (user) {
+    if (user)
       return res.status(422).json({
         message: "Validation error",
         errors: {
           email: "Email address already in use.",
         },
       });
-    }
-
-    if (password !== confirmPassword) {
-      return res.status(422).json({
-        message: "Validation error",
-        errors: {
-          confirmPassword: "Passwords do not match.",
-        },
-      });
-    }
-
-    console.log(keys.constants.email_regex);
-
-    if (!keys.constants.email_regex.test(email)) {
-      return res.status(422).json({
-        message: "Validation error",
-        errors: {
-          email: "Invalid email address.",
-        },
-      });
-    }
 
     const passwordHash = await bcrypt.hash(password, keys.auth.hashRounds);
     user = await User.create({ email, passwordHash, username });
@@ -62,6 +41,7 @@ router.post("/signup", async (req, res, next) => {
 });
 
 router.post("/signin", async (req, res, next) => {
+  console.log(req);
   try {
     const { email, password } = req.body;
 

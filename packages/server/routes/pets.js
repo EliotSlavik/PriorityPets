@@ -1,11 +1,10 @@
 const express = require("express");
 const { Pet } = require("../models");
 const { User } = require("../models");
-import requireAuth from "../middleware/requireAuth";
 
 const router = express.Router();
 
-router.get("/:id", requireAuth, async (request, response) => {
+router.get("/:id", async (request, response) => {
   const id = request.params.id;
 
   try {
@@ -21,7 +20,7 @@ router.get("/:id", requireAuth, async (request, response) => {
   }
 });
 
-router.post("/:id", requireAuth, async (request, response) => {
+router.post("/:id", async (request, response) => {
   const id = request.params.id;
   const { user, name, appearance, healthLevel } = request.body;
 
@@ -44,7 +43,7 @@ router.post("/:id", requireAuth, async (request, response) => {
   }
 });
 
-router.post("/heal/:id", requireAuth, async (request, response) => {
+router.post("/heal/:id", async (request, response) => {
   const { id } = request.params;
 
   try {
@@ -62,7 +61,7 @@ router.post("/heal/:id", requireAuth, async (request, response) => {
   }
 });
 
-router.post("/", requireAuth, async (request, response) => {
+router.post("/", async (request, response) => {
   const { name, appearance, userId } = request.body;
   try {
     const newPet = new Pet({ name, appearance, user: userId });
@@ -77,7 +76,7 @@ router.post("/", requireAuth, async (request, response) => {
   }
 });
 
-router.put("/feed", requireAuth, async (req, res) => {
+router.put("/feed", async (req, res) => {
   const { userId, petId } = req.body;
 
   try {
