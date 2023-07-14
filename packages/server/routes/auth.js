@@ -48,7 +48,7 @@ router.post("/signup", async (req, res, next) => {
     }
 
     const passwordHash = await bcrypt.hash(password, keys.auth.hashRounds);
-    user = await User.create({ email, passwordHash, username });
+    user = await User.create({ lowercaseEmail, passwordHash, username });
 
     user = user.toJSON();
     delete user.passwordHash;
